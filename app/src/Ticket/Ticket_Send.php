@@ -2,7 +2,7 @@
 
 namespace MetaStore\App\Cloud\Ticket;
 
-use MetaStore\App\Kernel;
+use MetaStore\App\Kernel\{Request, Session, Cookie, Parser, View, Hash};
 use MetaStore\App\Cloud\Config\Mail;
 use PHPMailer\PHPMailer\{PHPMailer, Exception};
 
@@ -11,6 +11,14 @@ use PHPMailer\PHPMailer\{PHPMailer, Exception};
  * @package MetaStore\App\Cloud\Ticket
  */
 class Ticket_Send {
+
+	/**
+	 *
+	 */
+	public static function destroyTokens() {
+		Session::destroy( '_metaToken' );
+		Session::destroy( '_metaCaptcha' );
+	}
 
 	/**
 	 * @param $userFirstName
@@ -46,11 +54,11 @@ class Ticket_Send {
 	 * Form: save fields.
 	 */
 	public static function saveForm() {
-		Kernel\Cookie::set( 'form', 'userFirstName', 'userFirstName' );
-		Kernel\Cookie::set( 'form', 'userLastName', 'userLastName' );
-		Kernel\Cookie::set( 'form', 'userMiddleName', 'userMiddleName' );
-		Kernel\Cookie::set( 'form', 'userMailFrom', 'userMailFrom' );
-		Kernel\Cookie::set( 'form', 'userPhone', 'userPhone' );
+		Cookie::set( 'userFirstName', 'userFirstName', 'form' );
+		Cookie::set( 'userLastName', 'userLastName', 'form' );
+		Cookie::set( 'userMiddleName', 'userMiddleName', 'form' );
+		Cookie::set( 'userMailFrom', 'userMailFrom', 'form' );
+		Cookie::set( 'userPhone', 'userPhone', 'form' );
 
 		return true;
 	}
@@ -62,45 +70,46 @@ class Ticket_Send {
 	 * @throws \Exception
 	 */
 	public static function sendMail() {
-		if ( ! isset( $_POST['_metaToken'] )
-		     || $_POST['_metaToken'] !== $_SESSION['_metaToken'] ) {
-			unset( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'] );
-			throw new \Exception( Kernel\View::get( 'error', 'status' ) );
+		if ( ( ! Request::setParam( '_metaToken' ) )
+		     || Request::setParam( '_metaToken' ) !== Session::get( '_metaToken' ) ) {
+			self::destroyTokens();
+			throw new \Exception( View::get( 'error', 'status' ) );
 		}
 
-		if ( empty( $_POST['userMailFrom'] )
-		     || empty( $_POST['fileLocation'] )
-		     || empty( $_POST['fileDestination'] )
-		     || empty( $_POST['fileDescription'] ) ) {
-			unset( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'] );
-			throw new \Exception( Kernel\View::get( 'warning.field', 'status' ) );
+		if ( empty( Request::setParam( 'userMailFrom' ) )
+		     || empty( Request::setParam( 'fileLocation' ) )
+		     || empty( Request::setParam( 'fileDestination' ) )
+		     || empty( Request::setParam( 'fileDescription' ) ) ) {
+			self::destroyTokens();
+			throw new \Exception( View::get( 'warning.field', 'status' ) );
 		}
 
-		if ( ( ! isset( $_POST['_metaCaptcha'] ) || $_POST['_metaCaptcha'] != $_SESSION['_metaCaptcha'][1] ) ) {
-			unset( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'] );
-			throw new \Exception( Kernel\View::get( 'warning.captcha', 'status' ) );
+		if ( ( ! Request::setParam( '_metaCaptcha' ) )
+		     || ( Request::setParam( '_metaCaptcha' ) != Session::get( '_metaCaptcha' )[1] ) ) {
+			self::destroyTokens();
+			throw new \Exception( View::get( 'warning.captcha', 'status' ) );
 		}
 
-		$getUserMail = Kernel\Parser::normalizeData( Kernel\Parser::clearData( $_POST['userMailFrom'] ) );
+		$getUserMail = Parser::normalizeData( Request::setParam( 'userMailFrom' ) );
 
-		if ( ! in_array( $getUserMail, Mail::getAuth( 'allow' ) ) ) {
+		/*if ( ! in_array( $getUserMail, Mail::getAuth( 'allow' ) ) ) {
 			unset( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'] );
 
-			throw new \Exception( Kernel\View::get( 'warning.auth', 'status' ) );
+			throw new \Exception( View::get( 'warning.auth', 'status' ) );
 		} else if ( in_array( $getUserMail, Mail::getAuth( 'deny' ) ) ) {
 			unset( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'] );
 
-			throw new \Exception( Kernel\View::get( 'warning.auth', 'status' ) );
-		}
+			throw new \Exception( View::get( 'warning.auth', 'status' ) );
+		}*/
 
-		$getUserFirstName  = Kernel\Parser::clearData( $_POST['userFirstName'] );
-		$getUserLastName   = Kernel\Parser::clearData( $_POST['userLastName'] );
-		$getUserMiddleName = Kernel\Parser::clearData( $_POST['userMiddleName'] );
-		$getUserPhone      = Kernel\Parser::clearData( $_POST['userPhone'] );
-		$getUserComment    = Kernel\Parser::clearData( $_POST['userComment'] );
-		$getFileLocation   = Kernel\Parser::clearData( $_POST['fileLocation'] );
-		$getFileSaveTime   = Kernel\Parser::clearData( $_POST['fileSaveTime'] );
-		$getHash           = Kernel\Hash::generator();
+		$getUserFirstName  = Request::setParam( 'userFirstName' );
+		$getUserLastName   = Request::setParam( 'userLastName' );
+		$getUserMiddleName = Request::setParam( 'userMiddleName' );
+		$getUserPhone      = Request::setParam( 'userPhone' );
+		$getUserComment    = Request::setParam( 'userComment' );
+		$getFileLocation   = Request::setParam( 'fileLocation' );
+		$getFileSaveTime   = Request::setParam( 'fileSaveTime' );
+		$getHash           = Hash::generator();
 
 		$mail = new PHPMailer ( true );
 
@@ -125,12 +134,13 @@ class Ticket_Send {
 			$mail->Subject = '[CLOUD-OPEN] Загрузка в облако от: ' . $getUserFirstName . ' ' . $getUserLastName;
 			$mail->Body    = self::mailBody( $getUserFirstName, $getUserLastName, $getUserMiddleName, $getUserMail, $getUserPhone, $getUserComment, $getFileLocation, $getFileSaveTime, $getHash );
 			$mail->send();
-			Kernel\View::get( 'success', 'status' );
+			View::get( 'success', 'status' );
 		} catch ( \Exception $e ) {
-			Kernel\View::get( 'error', 'status' );
+			View::get( 'error', 'status' );
 		}
 
-		unset( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'] );
+		Session::destroy( '_metaToken' );
+		Session::destroy( '_metaCaptcha' );
 
 		return true;
 	}

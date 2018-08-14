@@ -2,7 +2,7 @@
 
 <?php View::get( 'header', '_common' ); ?>
 
-<!-- / section: main -->
+<!-- section: main -->
 <section id="section-main" class="hero is-fullheight">
 	<div class="hero-body">
 		<div class="container">
@@ -63,6 +63,5 @@
 	</div>
 </section>
 <!-- / section: main -->
-
 
 <?php View::get( 'footer', '_common' ); ?>

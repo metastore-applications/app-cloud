@@ -1,3 +1,5 @@
+<?php use MetaStore\App\Kernel\Route; ?>
+
 <!DOCTYPE html>
 <html dir="ltr" lang="ru">
 <head prefix="og: http://ogp.me/ns#">
@@ -7,20 +9,20 @@
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<meta name="copyright" content="METADATA / FOUNDATION" />
-	<title></title>
+	<title>АО &quot;Институт &quot;ЭНЕРГОСЕТЬПРОЕКТ&quot;: Файловое хранилище</title>
 
 	<!-- open graph -->
 	<meta property="og:type" content="website" />
-	<meta property="og:site_name" content="" />
-	<meta property="og:title" content="" />
+	<meta property="og:site_name" content="АО &quot;Институт &quot;ЭНЕРГОСЕТЬПРОЕКТ&quot;: Файловое хранилище" />
+	<meta property="og:title" content="АО &quot;Институт &quot;ЭНЕРГОСЕТЬПРОЕКТ&quot;: Файловое хранилище" />
 	<meta property="og:description" content="" />
 	<meta property="og:image" content="" />
-	<meta property="og:url" content="" />
+	<meta property="og:url" content="<?php echo Route::HTTP_HOST() ?>" />
 	<!-- / open graph -->
 
 	<!-- twitter -->
 	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:title" content="" />
+	<meta name="twitter:title" content="АО &quot;Институт &quot;ЭНЕРГОСЕТЬПРОЕКТ&quot;: Файловое хранилище" />
 	<meta name="twitter:description" content="" />
 	<meta name="twitter:image" content="" />
 	<meta name="twitter:site" content="" />

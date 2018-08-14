@@ -2,7 +2,7 @@
 
 namespace MetaStore\App\Cloud;
 
-use MetaStore\App\Kernel;
+use MetaStore\App\Kernel\{Session, Token, Request, Parser, View};
 use MetaStore\App\Cloud\{Ticket\Ticket_Send, File\File_Upload};
 
 /**
@@ -12,53 +12,63 @@ use MetaStore\App\Cloud\{Ticket\Ticket_Send, File\File_Upload};
 class App {
 
 	/**
+	 * @throws \Exception
+	 */
+	public static function setSession() {
+		session_start();
+
+		if ( ! Session::get( '_metaToken' ) ) {
+			Session::set( '_metaToken', Token::generator() );
+		}
+
+		if ( ! Session::get( '_metaCaptcha' ) ) {
+			Session::set( '_metaCaptcha', [ random_int( 1000000000, 9999999999 ), random_int( 10000, 99999 ) ] );
+		}
+	}
+
+	/**
 	 * @return string
 	 */
 	public static function getType() {
-		$type = Kernel\Request::getParam( 'type' );
-		$out  = Kernel\Parser::normalizeData( $type );
+		$get = Request::getParam( 'get' );
+		$out = Parser::normalizeData( $get );
 
 		return $out;
 	}
 
 	/**
-	 * @return bool|File_Upload|Ticket_Send|mixed
+	 * @return bool
 	 * @throws \Exception
 	 */
 	public static function getPage() {
 		switch ( self::getType() ) {
 			case 'form.ticket.create':
-				$out = Kernel\View::get( 'form.ticket.create', 'page' );
+				View::get( 'form.ticket.create', 'page' );
 				break;
 			case 'form.file.upload':
-				$out = Kernel\View::get( 'form.file.upload', 'page' );
+				View::get( 'form.file.upload', 'page' );
 				break;
 			case 'form.file.download':
-				$out = Kernel\View::get( 'form.file.download', 'page' );
+				View::get( 'form.file.download', 'page' );
 				break;
 			case 'action.ticket.send':
-				$out = new Ticket_Send();
-				$out->saveForm();
-				$out->sendMail();
+				Ticket_Send::saveForm();
+				Ticket_Send::sendMail();
 				break;
 			case 'action.file.upload':
-				$out = new File_Upload();
-				$out->uploadFile();
 				break;
 			default:
-				return false;
+				View::get( 'home', 'page' );
 		}
 
-		return $out;
+		return true;
 	}
 
 	/**
-	 * @return bool|File_Upload|Ticket_Send|mixed
 	 * @throws \Exception
 	 */
 	public static function runApp() {
-		$out = self::getPage() ? self::getPage() : Kernel\View::get( 'home', 'page' );
-
-		return $out;
+		self::setSession();
+		self::getPage();
 	}
 }

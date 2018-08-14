@@ -1,0 +1,59 @@
+html, body {
+	font-family: 'Trebuchet MS', sans-serif
+}
+
+html {
+	background: #0f4970 url('../images/worldmap.png') no-repeat fixed 50% 0;
+}
+
+body {
+	position: relative;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	text-transform: uppercase
+}
+
+.help {
+	font-style: italic;
+}
+
+.metadata-cr {
+	display: block;
+	background: rgba(0, 0, 0, .6);
+	border-radius: .5rem;
+	color: #ccc;
+	font-size: .8rem;
+	position: absolute;
+	right: 1rem;
+	bottom: 1rem;
+	line-height: 1;
+	padding: .5rem;
+	a {
+		color: #fff;
+	}
+	.fa-heart {
+		color: #fe6e3a;
+	}
+}
+
+.media {
+	.media-left {
+		.fas {
+			$size: 2rem;
+			text-align: center;
+			font-size: $size;
+			color: #fff;
+			width: ($size * 2);
+			height: ($size * 2);
+			border-radius: 50%;
+			line-height: ($size * 2);
+			background-color: hsl(217, 71%, 53%);
+		}
+	}
+}
