@@ -1,0 +1,43 @@
+{
+	"name": "metastore/app-cloud",
+	"type": "project",
+	"description": "",
+	"license": "GPL-3.0-or-later",
+	"homepage": "https://metastore.pro",
+	"keywords": [
+		"metadata",
+		"metastore",
+		"project",
+		"cloud"
+	],
+	"authors": [
+		{
+			"name": "Kitsune Solar",
+			"email": "kitsune.solar@gmail.com",
+			"homepage": "https://kitsune.solar/",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"email": "support@metastore.pro",
+		"issues": "https://gitlab.com/metastore/apps/app-cloud/issues",
+		"forum": "https://webmasters.community",
+		"wiki": "https://webmasters.wiki",
+		"source": "https://gitlab.com/metastore/apps/app-cloud"
+	},
+	"require": {
+		"php": ">=7.2.0",
+		"metastore/app-kernel": "@dev"
+	},
+	"autoload": {
+		"psr-4": {
+			"MetaStore\\App\\Cloud\\": "app/src/"
+		}
+	},
+	"config": {
+		"preferred-install": "dist",
+		"sort-packages": true
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
+}
