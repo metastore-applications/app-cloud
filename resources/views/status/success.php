@@ -5,7 +5,9 @@
 	<section class="hero is-success is-fullheight">
 		<div class="hero-body">
 			<div class="container">
-				<h1 class="title is-1">Отправлено!</h1>
+				<h1 class="title is-1">
+					Отправлено!
+				</h1>
 				<div class="content box">
 					<p>
 						Ваше сообщение успешно отправлено!
