@@ -1,4 +1,9 @@
-<?php use MetaStore\App\Kernel\{View, MetaCR}; ?>
+<?php
+
+use MetaStore\App\Kernel\{View, MetaCR};
+use MetaStore\App\Cloud\Config;
+
+?>
 
 <?php View::get( 'header', '_common' ); ?>
 
@@ -21,45 +26,55 @@
 							</div>
 						</div>
 					</div>
-					<div class="media">
-						<figure class="media-left">
-							<p class="image is-64x64"><span class="fas fa-file-alt"></span></p>
-						</figure>
-						<div class="media-content">
-							<div class="content">
-								<h4><a href="?get=form.ticket.create">Заявка на загрузку файла</a></h4>
-								<p>
-									Создать заявку на загрузку файла.
-								</p>
+
+					<?php if ( Config\General::getService( 'ticket' )['enable'] ): ?>
+						<div class="media">
+							<figure class="media-left">
+								<p class="image is-64x64"><span class="fas fa-file-alt"></span></p>
+							</figure>
+							<div class="media-content">
+								<div class="content">
+									<h4><a href="?get=form.ticket.create">Заявка на загрузку файла</a></h4>
+									<p>
+										Создать заявку на загрузку файла.
+									</p>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="media">
-						<figure class="media-left">
-							<p class="image is-64x64"><span class="fas fa-upload"></span></p>
-						</figure>
-						<div class="media-content">
-							<div class="content">
-								<h4><a href="?get=form.file.upload">Загрузить файл</a></h4>
-								<p>
-									Загрузить файл при помощи удобной формы.
-								</p>
+					<?php endif; ?>
+
+					<?php if ( Config\General::getService( 'upload' )['enable'] ): ?>
+						<div class="media">
+							<figure class="media-left">
+								<p class="image is-64x64"><span class="fas fa-upload"></span></p>
+							</figure>
+							<div class="media-content">
+								<div class="content">
+									<h4><a href="?get=form.file.upload">Загрузить файл</a></h4>
+									<p>
+										Загрузить файл при помощи удобной формы.
+									</p>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="media">
-						<figure class="media-left">
-							<p class="image is-64x64"><span class="fas fa-download"></span></p>
-						</figure>
-						<div class="media-content">
-							<div class="content">
-								<h4><a href="?get=form.file.download">Скачать файл</a></h4>
-								<p>
-									Скачать файл при помощи удобной формы.
-								</p>
+					<?php endif; ?>
+
+					<?php if ( Config\General::getService( 'download' )['enable'] ): ?>
+						<div class="media">
+							<figure class="media-left">
+								<p class="image is-64x64"><span class="fas fa-download"></span></p>
+							</figure>
+							<div class="media-content">
+								<div class="content">
+									<h4><a href="?get=form.file.download">Скачать файл</a></h4>
+									<p>
+										Скачать файл при помощи удобной формы.
+									</p>
+								</div>
 							</div>
 						</div>
-					</div>
+					<?php endif; ?>
+
 					<div class="has-text-right">
 						<?php echo MetaCR::getCR(); ?>
 					</div>

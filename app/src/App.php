@@ -50,12 +50,24 @@ class App {
 	public static function getPage() {
 		switch ( self::getType() ) {
 			case 'form.ticket.create':
+				if ( ! Config\General::getService( 'ticket' )['enable'] ) {
+					exit( 0 );
+				}
+
 				Kernel\View::get( 'form.ticket.create', 'page' );
 				break;
 			case 'form.file.upload':
+				if ( ! Config\General::getService( 'upload' )['enable'] ) {
+					exit( 0 );
+				}
+
 				Kernel\View::get( 'form.file.upload', 'page' );
 				break;
 			case 'form.file.download':
+				if ( ! Config\General::getService( 'download' )['enable'] ) {
+					exit( 0 );
+				}
+
 				Kernel\View::get( 'form.file.download', 'page' );
 				break;
 			case 'action.ticket.send':

@@ -1,0 +1,18 @@
+{
+	"general": {
+		"system": {
+			"enable": 1
+		},
+		"service": {
+			"ticket": {
+				"enable": 1
+			},
+			"upload": {
+				"enable": 1
+			},
+			"download": {
+				"enable": 0
+			}
+		}
+	}
+}

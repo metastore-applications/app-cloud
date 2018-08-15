@@ -2,7 +2,7 @@
 
 namespace MetaStore\App\Cloud\Config;
 
-use MetaStore\App\Kernel\Config;
+use MetaStore\App\Kernel;
 
 /**
  * Class Ticket
@@ -13,8 +13,8 @@ class Ticket {
 	/**
 	 * @return mixed
 	 */
-	public static function getTicket() {
-		$out = Config::getFile( 'ticket' );
+	public static function getConfig() {
+		$out = Kernel\Config::getFile( 'service.ticket' );
 
 		return $out['ticket'];
 	}
@@ -25,7 +25,7 @@ class Ticket {
 	 * @return mixed
 	 */
 	public static function getMailFrom( $status ) {
-		$get = self::getTicket();
+		$get = self::getConfig();
 
 		if ( ! isset( $get['mail']['from'][ $status ] ) ) {
 			return false;
@@ -40,7 +40,7 @@ class Ticket {
 	 * @return mixed
 	 */
 	public static function getMailTo() {
-		$get = self::getTicket();
+		$get = self::getConfig();
 
 		if ( ! isset( $get['mail']['to'] ) ) {
 			return false;
