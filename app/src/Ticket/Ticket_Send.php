@@ -2,8 +2,8 @@
 
 namespace MetaStore\App\Cloud\Ticket;
 
-use MetaStore\App\Kernel\{Request, Cookie, Parser, View};
-use MetaStore\App\Cloud\Config\Settings;
+use MetaStore\App\Kernel;
+use MetaStore\App\Cloud\Config;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
@@ -24,14 +24,16 @@ class Ticket_Send {
 	 * @throws \Exception
 	 */
 	public static function getFormData() {
-		$getUserFirstName  = Request::setParam( 'userFirstName' );
-		$getUserLastName   = Request::setParam( 'userLastName' );
-		$getUserMiddleName = Request::setParam( 'userMiddleName' );
-		$getUserMail       = Parser::normalizeData( Request::setParam( 'userMailFrom' ) );
-		$getUserPhone      = Request::setParam( 'userPhone' );
-		$getUserComment    = Request::setParam( 'userComment' );
-		$getFileLocation   = Request::setParam( 'fileLocation' );
-		$getFileSaveTime   = Request::setParam( 'fileSaveTime' );
+		$getUserFirstName   = Kernel\Request::setParam( 'userFirstName' );
+		$getUserLastName    = Kernel\Request::setParam( 'userLastName' );
+		$getUserMiddleName  = Kernel\Request::setParam( 'userMiddleName' );
+		$getUserMail        = Kernel\Parser::normalizeData( Kernel\Request::setParam( 'userMailFrom' ) );
+		$getUserPhone       = Kernel\Request::setParam( 'userPhone' );
+		$getUserComment     = Kernel\Request::setParam( 'userComment' );
+		$getFileLocation    = Kernel\Request::setParam( 'fileLocation' );
+		$getFileDestination = Kernel\Request::setParam( 'fileDestination' );
+		$getFileDescription = Kernel\Request::setParam( 'fileDescription' );
+		$getFileSaveTime    = Kernel\Request::setParam( 'fileSaveTime' );
 
 		switch ( $getFileSaveTime ) {
 			case 'days_03':
@@ -53,6 +55,8 @@ class Ticket_Send {
 			'getUserPhone',
 			'getUserComment',
 			'getFileLocation',
+			'getFileDestination',
+			'getFileDescription',
 			'getFileSaveTime',
 		];
 
@@ -63,10 +67,10 @@ class Ticket_Send {
 	 *
 	 */
 	public static function checkToken() {
-		if ( ( ! Request::setParam( '_metaToken' ) )
-		     || Request::setParam( '_metaToken' ) !== $_SESSION['_metaToken'] ) {
+		if ( ( ! Kernel\Request::setParam( '_metaToken' ) )
+		     || Kernel\Request::setParam( '_metaToken' ) !== $_SESSION['_metaToken'] ) {
 			self::destroyToken();
-			View::get( 'error', 'status' );
+			Kernel\View::get( 'error', 'status' );
 			exit( 0 );
 		}
 	}
@@ -77,15 +81,15 @@ class Ticket_Send {
 	public static function checkMailAddress() {
 		$form = self::getFormData();
 
-		if ( Settings::getAuth( 'allow' ) && ! in_array( $form['getUserMail'], Settings::getAuth( 'allow' ) ) ) {
+		if ( Config\Ticket::getMailFrom( 'allow' ) && ! in_array( $form['getUserMail'], Config\Ticket::getMailFrom( 'allow' ) ) ) {
 			self::destroyToken();
-			View::get( 'warning.auth', 'status' );
+			Kernel\View::get( 'warning.auth', 'status' );
 			exit( 0 );
 		}
 
-		if ( Settings::getAuth( 'deny' ) && in_array( $form['getUserMail'], Settings::getAuth( 'deny' ) ) ) {
+		if ( Config\Ticket::getMailFrom( 'deny' ) && in_array( $form['getUserMail'], Config\Ticket::getMailFrom( 'deny' ) ) ) {
 			self::destroyToken();
-			View::get( 'warning.auth', 'status' );
+			Kernel\View::get( 'warning.auth', 'status' );
 			exit( 0 );
 		}
 	}
@@ -94,12 +98,12 @@ class Ticket_Send {
 	 *
 	 */
 	public static function checkFormField() {
-		if ( empty( Request::setParam( 'userMailFrom' ) )
-		     || empty( Request::setParam( 'fileLocation' ) )
-		     || empty( Request::setParam( 'fileDestination' ) )
-		     || empty( Request::setParam( 'fileDescription' ) ) ) {
+		if ( empty( Kernel\Request::setParam( 'userMailFrom' ) )
+		     || empty( Kernel\Request::setParam( 'fileLocation' ) )
+		     || empty( Kernel\Request::setParam( 'fileDestination' ) )
+		     || empty( Kernel\Request::setParam( 'fileDescription' ) ) ) {
 			self::destroyToken();
-			View::get( 'warning.field', 'status' );
+			Kernel\View::get( 'warning.field', 'status' );
 			exit( 0 );
 		}
 	}
@@ -108,10 +112,10 @@ class Ticket_Send {
 	 *
 	 */
 	public static function checkCaptcha() {
-		if ( ( ! Request::setParam( '_metaCaptcha' ) )
-		     || ( Request::setParam( '_metaCaptcha' ) != $_SESSION['_metaCaptcha'][1] ) ) {
+		if ( ( ! Kernel\Request::setParam( '_metaCaptcha' ) )
+		     || ( Kernel\Request::setParam( '_metaCaptcha' ) != $_SESSION['_metaCaptcha'][1] ) ) {
 			self::destroyToken();
-			View::get( 'warning.captcha', 'status' );
+			Kernel\View::get( 'warning.captcha', 'status' );
 			exit( 0 );
 		}
 	}
@@ -123,7 +127,7 @@ class Ticket_Send {
 	public static function mailSubject() {
 		$form = self::getFormData();
 
-		$out = '[CLOUD-OPEN] Загрузка в облако от: ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
+		$out = '[CLOUD-' . mb_strtoupper( $_SESSION['_ticketID'] ) . '-OPEN] Загрузка в облако от: ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
 
 		return $out;
 	}
@@ -140,6 +144,8 @@ class Ticket_Send {
 		$out .= '<tr><td>E-mail:</td><td>' . $form['getUserMail'] . '</td></tr>';
 		$out .= '<tr><td>Телефон:</td><td>' . $form['getUserPhone'] . '</td></tr>';
 		$out .= '<tr><td>Файл:</td><td><code>' . $form['getFileLocation'] . '</code></td></tr>';
+		$out .= '<tr><td>Место назначения:</td><td>' . $form['getFileDestination'] . '</td></tr>';
+		$out .= '<tr><td>Описание:</td><td>' . $form['getFileDescription'] . '</td></tr>';
 		$out .= '<tr><td>Время:</td><td><strong>' . $form['getFileSaveTime'] . '</strong></td></tr>';
 
 		if ( ! empty( $form['getUserComment'] ) ) {
@@ -156,11 +162,11 @@ class Ticket_Send {
 	 * Form: save fields.
 	 */
 	public static function saveForm() {
-		Cookie::set( 'userFirstName', 'userFirstName', 'form' );
-		Cookie::set( 'userLastName', 'userLastName', 'form' );
-		Cookie::set( 'userMiddleName', 'userMiddleName', 'form' );
-		Cookie::set( 'userMailFrom', 'userMailFrom', 'form' );
-		Cookie::set( 'userPhone', 'userPhone', 'form' );
+		Kernel\Cookie::set( 'userFirstName', 'userFirstName', 'form' );
+		Kernel\Cookie::set( 'userLastName', 'userLastName', 'form' );
+		Kernel\Cookie::set( 'userMiddleName', 'userMiddleName', 'form' );
+		Kernel\Cookie::set( 'userMailFrom', 'userMailFrom', 'form' );
+		Kernel\Cookie::set( 'userPhone', 'userPhone', 'form' );
 
 		return true;
 	}
@@ -172,6 +178,8 @@ class Ticket_Send {
 	 * @throws \Exception
 	 */
 	public static function sendMail() {
+		$form = self::getFormData();
+
 		self::checkToken();
 		self::checkFormField();
 		self::checkCaptcha();
@@ -181,16 +189,21 @@ class Ticket_Send {
 
 		try {
 			$mail->setFrom( 'cloud-' . $_SESSION['_ticketID'] . '@web.aoesp.ru' );
-			$mail->addAddress( 'esp.cloudbox@gmail.com' );
-			$mail->addAddress( 'dunaev_y@aoesp.ru' );
+			$addresses = Config\Ticket::getMailTo();
+
+			foreach ($addresses as $address) {
+				$mail->addAddress( $address );
+			}
+
+			$mail->addAddress( $form['getUserMail'] );
 			$mail->isHTML( true );
 			$mail->CharSet = 'utf-8';
 			$mail->Subject = self::mailSubject();
 			$mail->Body    = self::mailBody();
 			$mail->send();
-			View::get( 'success', 'status' );
+			Kernel\View::get( 'success', 'status' );
 		} catch ( \Exception $e ) {
-			View::get( 'error', 'status' );
+			Kernel\View::get( 'error', 'status' );
 		}
 
 		self::destroyToken();
