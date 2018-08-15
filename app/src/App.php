@@ -2,7 +2,7 @@
 
 namespace MetaStore\App\Cloud;
 
-use MetaStore\App\Kernel\{Random, Session, Token, Request, Parser, View};
+use MetaStore\App\Kernel\{Hash, Random, Token, Request, Parser, View};
 use MetaStore\App\Cloud\{Ticket\Ticket_Send, File\File_Upload};
 
 /**
@@ -17,15 +17,19 @@ class App {
 	public static function setSession() {
 		session_start();
 
-		if ( ! Session::get( '_metaToken' ) ) {
-			Session::set( '_metaToken', Token::generator() );
+		if ( ! isset( $_SESSION['_metaToken'] ) ) {
+			$_SESSION['_metaToken'] = Token::generator();
 		}
 
-		if ( ! Session::get( '_metaCaptcha' ) ) {
-			Session::set( '_metaCaptcha', [
+		if ( ! isset( $_SESSION['_ticketID'] ) ) {
+			$_SESSION['_ticketID'] = Hash::generator();
+		}
+
+		if ( ! isset( $_SESSION['_metaCaptcha'] ) ) {
+			$_SESSION['_metaCaptcha'] = [
 				Random::number( 1000000000, 9999999999 ),
 				Random::number( 10000, 99999 )
-			] );
+			];
 		}
 	}
 

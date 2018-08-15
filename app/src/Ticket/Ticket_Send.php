@@ -2,7 +2,7 @@
 
 namespace MetaStore\App\Cloud\Ticket;
 
-use MetaStore\App\Kernel\{Request, Session, Cookie, Parser, View, Hash};
+use MetaStore\App\Kernel\{Request, Cookie, Parser, View};
 use MetaStore\App\Cloud\Config\Settings;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -16,8 +16,7 @@ class Ticket_Send {
 	 *
 	 */
 	public static function destroyToken() {
-		Session::destroy( '_metaToken' );
-		Session::destroy( '_metaCaptcha' );
+		unset ( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'], $_SESSION['_ticketID'] );
 	}
 
 	/**
@@ -33,7 +32,6 @@ class Ticket_Send {
 		$getUserComment    = Request::setParam( 'userComment' );
 		$getFileLocation   = Request::setParam( 'fileLocation' );
 		$getFileSaveTime   = Request::setParam( 'fileSaveTime' );
-		$getHash           = Hash::generator();
 
 		switch ( $getFileSaveTime ) {
 			case 'days_03':
@@ -56,7 +54,6 @@ class Ticket_Send {
 			'getUserComment',
 			'getFileLocation',
 			'getFileSaveTime',
-			'getHash',
 		];
 
 		return compact( $out );
@@ -67,7 +64,7 @@ class Ticket_Send {
 	 */
 	public static function checkToken() {
 		if ( ( ! Request::setParam( '_metaToken' ) )
-		     || Request::setParam( '_metaToken' ) !== Session::get( '_metaToken' ) ) {
+		     || Request::setParam( '_metaToken' ) !== $_SESSION['_metaToken'] ) {
 			self::destroyToken();
 			View::get( 'error', 'status' );
 			exit( 0 );
@@ -112,7 +109,7 @@ class Ticket_Send {
 	 */
 	public static function checkCaptcha() {
 		if ( ( ! Request::setParam( '_metaCaptcha' ) )
-		     || ( Request::setParam( '_metaCaptcha' ) != Session::get( '_metaCaptcha' )[1] ) ) {
+		     || ( Request::setParam( '_metaCaptcha' ) != $_SESSION['_metaCaptcha'][1] ) ) {
 			self::destroyToken();
 			View::get( 'warning.captcha', 'status' );
 			exit( 0 );
@@ -149,6 +146,7 @@ class Ticket_Send {
 			$out .= '<tr><td>Комментарий:</td><td>' . $form['getUserComment'] . '</td></tr>';
 		}
 
+		$out .= '<tr><td>Ticket ID:</td><td>' . $_SESSION['_ticketID'] . '</td></tr>';
 		$out .= '</table>';
 
 		return $out;
@@ -174,8 +172,6 @@ class Ticket_Send {
 	 * @throws \Exception
 	 */
 	public static function sendMail() {
-		$form = self::getFormData();
-
 		self::checkToken();
 		self::checkFormField();
 		self::checkCaptcha();
@@ -184,8 +180,9 @@ class Ticket_Send {
 		$mail = new PHPMailer ( true );
 
 		try {
-			$mail->setFrom( 'cloud-' . $form['getHash'] . '@web.aoesp.ru' );
+			$mail->setFrom( 'cloud-' . $_SESSION['_ticketID'] . '@web.aoesp.ru' );
 			$mail->addAddress( 'esp.cloudbox@gmail.com' );
+			$mail->addAddress( 'dunaev_y@aoesp.ru' );
 			$mail->isHTML( true );
 			$mail->CharSet = 'utf-8';
 			$mail->Subject = self::mailSubject();
