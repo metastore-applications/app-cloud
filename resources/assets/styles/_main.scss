@@ -23,23 +23,8 @@ h6 {
 	font-style: italic;
 }
 
-.metadata-cr {
-	display: block;
-	background: rgba(0, 0, 0, .6);
-	border-radius: .5rem;
-	color: #ccc;
+.meta-cr {
 	font-size: .8rem;
-	position: absolute;
-	right: 1rem;
-	bottom: 1rem;
-	line-height: 1;
-	padding: .5rem;
-	a {
-		color: #fff;
-	}
-	.fa-heart {
-		color: #fe6e3a;
-	}
 }
 
 .media {

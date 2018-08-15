@@ -2,7 +2,7 @@
 
 namespace MetaStore\App\Cloud;
 
-use MetaStore\App\Kernel\{Session, Token, Request, Parser, View};
+use MetaStore\App\Kernel\{Random, Session, Token, Request, Parser, View};
 use MetaStore\App\Cloud\{Ticket\Ticket_Send, File\File_Upload};
 
 /**
@@ -22,7 +22,10 @@ class App {
 		}
 
 		if ( ! Session::get( '_metaCaptcha' ) ) {
-			Session::set( '_metaCaptcha', [ random_int( 1000000000, 9999999999 ), random_int( 10000, 99999 ) ] );
+			Session::set( '_metaCaptcha', [
+				Random::number( 1000000000, 9999999999 ),
+				Random::number( 10000, 99999 )
+			] );
 		}
 	}
 

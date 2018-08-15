@@ -3,8 +3,8 @@
 namespace MetaStore\App\Cloud\Ticket;
 
 use MetaStore\App\Kernel\{Request, Session, Cookie, Parser, View, Hash};
-use MetaStore\App\Cloud\Config\Mail;
-use PHPMailer\PHPMailer\{PHPMailer, Exception};
+use MetaStore\App\Cloud\Config\Settings;
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Class Ticket_Send
@@ -15,34 +15,143 @@ class Ticket_Send {
 	/**
 	 *
 	 */
-	public static function destroyTokens() {
+	public static function destroyToken() {
 		Session::destroy( '_metaToken' );
 		Session::destroy( '_metaCaptcha' );
 	}
 
 	/**
-	 * @param $userFirstName
-	 * @param $userLastName
-	 * @param $userMiddleName
-	 * @param $userMail
-	 * @param $userPhone
-	 * @param $userComment
-	 * @param $fileLocation
-	 * @param $fileSaveTime
-	 * @param $hash
-	 *
-	 * @return string
+	 * @return array
+	 * @throws \Exception
 	 */
-	public static function mailBody( $userFirstName, $userLastName, $userMiddleName, $userMail, $userPhone, $userComment, $fileLocation, $fileSaveTime, $hash ) {
-		$out = '<table>';
-		$out .= '<tr><td>ФИО:</td><td>' . $userLastName . ' ' . $userFirstName . ' ' . $userMiddleName . '</td></tr>';
-		$out .= '<tr><td>E-mail:</td><td>' . $userMail . '</td></tr>';
-		$out .= '<tr><td>Телефон:</td><td>' . $userPhone . '</td></tr>';
-		$out .= '<tr><td>Файл:</td><td><code>' . $fileLocation . '</code></td></tr>';
-		$out .= '<tr><td>Время:</td><td><strong>' . $fileSaveTime . '</strong></td></tr>';
+	public static function getFormData() {
+		$getUserFirstName  = Request::setParam( 'userFirstName' );
+		$getUserLastName   = Request::setParam( 'userLastName' );
+		$getUserMiddleName = Request::setParam( 'userMiddleName' );
+		$getUserMail       = Parser::normalizeData( Request::setParam( 'userMailFrom' ) );
+		$getUserPhone      = Request::setParam( 'userPhone' );
+		$getUserComment    = Request::setParam( 'userComment' );
+		$getFileLocation   = Request::setParam( 'fileLocation' );
+		$getFileSaveTime   = Request::setParam( 'fileSaveTime' );
+		$getHash           = Hash::generator();
 
-		if ( ! empty( $userComment ) ) {
-			$out .= '<tr><td>Комментарий:</td><td>' . $userComment . '</td></tr>';
+		switch ( $getFileSaveTime ) {
+			case 'days_03':
+				$getFileSaveTime = '3 дня';
+				break;
+			case 'days_10':
+				$getFileSaveTime = '10 дней';
+				break;
+			default:
+				$getFileSaveTime = '';
+				break;
+		}
+
+		$out = [
+			'getUserFirstName',
+			'getUserLastName',
+			'getUserMiddleName',
+			'getUserMail',
+			'getUserPhone',
+			'getUserComment',
+			'getFileLocation',
+			'getFileSaveTime',
+			'getHash',
+		];
+
+		return compact( $out );
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	public static function checkToken() {
+		if ( ( ! Request::setParam( '_metaToken' ) )
+		     || Request::setParam( '_metaToken' ) !== Session::get( '_metaToken' ) ) {
+			self::destroyToken();
+			throw new \Exception(
+				View::get( 'error', 'status' )
+			);
+		}
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	public static function checkMailAddress() {
+		$form = self::getFormData();
+
+		if ( Settings::getAuth( 'allow' ) && ! in_array( $form['getUserMail'], Settings::getAuth( 'allow' ) ) ) {
+			self::destroyToken();
+			throw new \Exception(
+				View::get( 'warning.auth', 'status' )
+			);
+		}
+
+		if ( Settings::getAuth( 'deny' ) && in_array( $form['getUserMail'], Settings::getAuth( 'deny' ) ) ) {
+			self::destroyToken();
+			throw new \Exception(
+				View::get( 'warning.auth', 'status' )
+			);
+		}
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	public static function checkFormField() {
+		if ( empty( Request::setParam( 'userMailFrom' ) )
+		     || empty( Request::setParam( 'fileLocation' ) )
+		     || empty( Request::setParam( 'fileDestination' ) )
+		     || empty( Request::setParam( 'fileDescription' ) ) ) {
+			self::destroyToken();
+			throw new \Exception(
+				View::get( 'warning.field', 'status' )
+			);
+		}
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	public static function checkCaptcha() {
+		if ( ( ! Request::setParam( '_metaCaptcha' ) )
+		     || ( Request::setParam( '_metaCaptcha' ) != Session::get( '_metaCaptcha' )[1] ) ) {
+			self::destroyToken();
+			throw new \Exception(
+				View::get( 'warning.captcha', 'status' )
+			);
+		}
+	}
+
+	/**
+	 * @return string
+	 * @throws \Exception
+	 */
+	public static function mailSubject() {
+		$form = self::getFormData();
+
+		$out = '[CLOUD-OPEN] Загрузка в облако от: ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
+
+		return $out;
+	}
+
+	/**
+	 * @return string
+	 * @throws \Exception
+	 */
+	public static function mailBody() {
+		$form = self::getFormData();
+
+		$out = '<table>';
+		$out .= '<tr><td>ФИО:</td><td>' . $form['getUserLastName'] . ' ' . $form['getUserFirstName'] . ' ' . $form['getUserMiddleName'] . '</td></tr>';
+		$out .= '<tr><td>E-mail:</td><td>' . $form['getUserMail'] . '</td></tr>';
+		$out .= '<tr><td>Телефон:</td><td>' . $form['getUserPhone'] . '</td></tr>';
+		$out .= '<tr><td>Файл:</td><td><code>' . $form['getFileLocation'] . '</code></td></tr>';
+		$out .= '<tr><td>Время:</td><td><strong>' . $form['getFileSaveTime'] . '</strong></td></tr>';
+
+		if ( ! empty( $form['getUserComment'] ) ) {
+			$out .= '<tr><td>Комментарий:</td><td>' . $form['getUserComment'] . '</td></tr>';
 		}
 
 		$out .= '</table>';
@@ -70,77 +179,29 @@ class Ticket_Send {
 	 * @throws \Exception
 	 */
 	public static function sendMail() {
-		if ( ( ! Request::setParam( '_metaToken' ) )
-		     || Request::setParam( '_metaToken' ) !== Session::get( '_metaToken' ) ) {
-			self::destroyTokens();
-			throw new \Exception( View::get( 'error', 'status' ) );
-		}
+		$form = self::getFormData();
 
-		if ( empty( Request::setParam( 'userMailFrom' ) )
-		     || empty( Request::setParam( 'fileLocation' ) )
-		     || empty( Request::setParam( 'fileDestination' ) )
-		     || empty( Request::setParam( 'fileDescription' ) ) ) {
-			self::destroyTokens();
-			throw new \Exception( View::get( 'warning.field', 'status' ) );
-		}
-
-		if ( ( ! Request::setParam( '_metaCaptcha' ) )
-		     || ( Request::setParam( '_metaCaptcha' ) != Session::get( '_metaCaptcha' )[1] ) ) {
-			self::destroyTokens();
-			throw new \Exception( View::get( 'warning.captcha', 'status' ) );
-		}
-
-		$getUserMail = Parser::normalizeData( Request::setParam( 'userMailFrom' ) );
-
-		/*if ( ! in_array( $getUserMail, Mail::getAuth( 'allow' ) ) ) {
-			unset( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'] );
-
-			throw new \Exception( View::get( 'warning.auth', 'status' ) );
-		} else if ( in_array( $getUserMail, Mail::getAuth( 'deny' ) ) ) {
-			unset( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'] );
-
-			throw new \Exception( View::get( 'warning.auth', 'status' ) );
-		}*/
-
-		$getUserFirstName  = Request::setParam( 'userFirstName' );
-		$getUserLastName   = Request::setParam( 'userLastName' );
-		$getUserMiddleName = Request::setParam( 'userMiddleName' );
-		$getUserPhone      = Request::setParam( 'userPhone' );
-		$getUserComment    = Request::setParam( 'userComment' );
-		$getFileLocation   = Request::setParam( 'fileLocation' );
-		$getFileSaveTime   = Request::setParam( 'fileSaveTime' );
-		$getHash           = Hash::generator();
+		self::checkToken();
+		self::checkFormField();
+		self::checkCaptcha();
+		self::checkMailAddress();
 
 		$mail = new PHPMailer ( true );
 
-		switch ( $getFileSaveTime ) {
-			case 'days_03':
-				$getFileSaveTime = '3 дня';
-				break;
-			case 'days_10':
-				$getFileSaveTime = '10 дней';
-				break;
-			default:
-				$getFileSaveTime = '';
-				break;
-		}
-
 		try {
-			$mail->setFrom( 'cloud-' . $getHash . '@web.aoesp.ru' );
+			$mail->setFrom( 'cloud-' . $form['getHash'] . '@web.aoesp.ru' );
 			$mail->addAddress( 'esp.cloudbox@gmail.com' );
-			//$mail->addAddress( $getUserMail );
 			$mail->isHTML( true );
 			$mail->CharSet = 'utf-8';
-			$mail->Subject = '[CLOUD-OPEN] Загрузка в облако от: ' . $getUserFirstName . ' ' . $getUserLastName;
-			$mail->Body    = self::mailBody( $getUserFirstName, $getUserLastName, $getUserMiddleName, $getUserMail, $getUserPhone, $getUserComment, $getFileLocation, $getFileSaveTime, $getHash );
+			$mail->Subject = self::mailSubject();
+			$mail->Body    = self::mailBody();
 			$mail->send();
 			View::get( 'success', 'status' );
 		} catch ( \Exception $e ) {
 			View::get( 'error', 'status' );
 		}
 
-		Session::destroy( '_metaToken' );
-		Session::destroy( '_metaCaptcha' );
+		self::destroyToken();
 
 		return true;
 	}

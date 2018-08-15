@@ -2,15 +2,19 @@
 
 namespace MetaStore\App\Cloud\Config;
 
-use MetaStore\App\Kernel;
+use MetaStore\App\Kernel\Config;
 
-class Mail {
+/**
+ * Class Settings
+ * @package MetaStore\App\Cloud\Config
+ */
+class Settings {
 
 	/**
 	 * @return mixed
 	 */
 	public static function getMail() {
-		$out = Kernel\Config::getFile( 'mail' );
+		$out = Config::getFile( 'mail' );
 
 		return $out['mail'];
 	}

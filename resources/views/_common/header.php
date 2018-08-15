@@ -9,6 +9,7 @@
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<meta name="copyright" content="METADATA / FOUNDATION" />
+	<meta name="robots" content="noindex, nofollow" />
 	<title>АО &quot;Институт &quot;ЭНЕРГОСЕТЬПРОЕКТ&quot;: Файловое хранилище</title>
 
 	<!-- open graph -->
@@ -30,9 +31,7 @@
 	<!-- / twitter -->
 
 	<!-- styles -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i|Roboto:400,400i,700,700i|Fira+Mono:400,700&amp;subset=cyrillic" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox/dist/jquery.fancybox.min.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
 	<link type="text/css" rel="stylesheet" href="/resources/assets/styles/theme.css" />
 	<!-- / styles -->
