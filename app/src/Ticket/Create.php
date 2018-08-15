@@ -7,10 +7,10 @@ use MetaStore\App\Cloud\Config;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
- * Class Ticket_Send
+ * Class Create
  * @package MetaStore\App\Cloud\Ticket
  */
-class Ticket_Send {
+class Create {
 
 	/**
 	 *

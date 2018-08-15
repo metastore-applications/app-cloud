@@ -3,10 +3,10 @@
 namespace MetaStore\App\Cloud\File;
 
 /**
- * Class File_Upload
+ * Class Upload
  * @package MetaStore\App\Cloud\File
  */
-class File_Upload {
+class Upload {
 	public static function uploadFile() {
 	}
 }

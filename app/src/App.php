@@ -3,7 +3,7 @@
 namespace MetaStore\App\Cloud;
 
 use MetaStore\App\Kernel;
-use MetaStore\App\Cloud\{Ticket\Ticket_Send, File\File_Upload};
+use MetaStore\App\Cloud\{Ticket, File};
 
 /**
  * Class App
@@ -59,8 +59,8 @@ class App {
 				Kernel\View::get( 'form.file.download', 'page' );
 				break;
 			case 'action.ticket.send':
-				Ticket_Send::saveForm();
-				Ticket_Send::sendMail();
+				Ticket\Create::saveForm();
+				Ticket\Create::sendMail();
 				break;
 			case 'action.file.upload':
 				break;
