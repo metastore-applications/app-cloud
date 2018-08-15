@@ -1,9 +1,5 @@
-<?php
-
-use MetaStore\App\Kernel\{View, MetaCR};
-use MetaStore\App\Cloud\Config;
-
-?>
+<?php use MetaStore\App\Kernel\{View, MetaCR};
+use MetaStore\App\Cloud\Config; ?>
 
 <?php View::get( 'header', '_common' ); ?>
 

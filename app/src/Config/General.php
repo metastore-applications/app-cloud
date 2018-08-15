@@ -19,6 +19,28 @@ class General {
 		return $out['general'];
 	}
 
+	/**
+	 * @param $param
+	 *
+	 * @return mixed
+	 */
+	public static function getSystem( $param ) {
+		$get = self::getConfig();
+
+		if ( ! isset( $get['system'][ $param ] ) ) {
+			return false;
+		}
+
+		$out = $get['system'][ $param ];
+
+		return $out;
+	}
+
+	/**
+	 * @param $service
+	 *
+	 * @return mixed
+	 */
 	public static function getService( $service ) {
 		$get = self::getConfig();
 

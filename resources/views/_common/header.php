@@ -1,4 +1,5 @@
-<?php use MetaStore\App\Kernel\Route; ?>
+<?php use MetaStore\App\Kernel\Route;
+use MetaStore\App\Cloud\Config; ?>
 
 <!DOCTYPE html>
 <html dir="ltr" lang="ru">
@@ -10,12 +11,12 @@
 	<meta name="description" content="" />
 	<meta name="copyright" content="METADATA / FOUNDATION" />
 	<meta name="robots" content="noindex, nofollow" />
-	<title>АО &quot;Институт &quot;ЭНЕРГОСЕТЬПРОЕКТ&quot;: Файловое хранилище</title>
+	<title><?php echo Config\General::getSystem( 'name' ) ?></title>
 
 	<!-- open graph -->
 	<meta property="og:type" content="website" />
-	<meta property="og:site_name" content="АО &quot;Институт &quot;ЭНЕРГОСЕТЬПРОЕКТ&quot;: Файловое хранилище" />
-	<meta property="og:title" content="АО &quot;Институт &quot;ЭНЕРГОСЕТЬПРОЕКТ&quot;: Файловое хранилище" />
+	<meta property="og:site_name" content="<?php echo Config\General::getSystem( 'name' ) ?>" />
+	<meta property="og:title" content="<?php echo Config\General::getSystem( 'name' ) ?>" />
 	<meta property="og:description" content="" />
 	<meta property="og:image" content="" />
 	<meta property="og:url" content="<?php echo Route::HTTP_HOST() ?>" />
@@ -23,7 +24,7 @@
 
 	<!-- twitter -->
 	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:title" content="АО &quot;Институт &quot;ЭНЕРГОСЕТЬПРОЕКТ&quot;: Файловое хранилище" />
+	<meta name="twitter:title" content="<?php echo Config\General::getSystem( 'name' ) ?>" />
 	<meta name="twitter:description" content="" />
 	<meta name="twitter:image" content="" />
 	<meta name="twitter:site" content="" />
