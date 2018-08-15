@@ -1,20 +1,18 @@
-<!DOCTYPE html>
-<html dir="ltr" lang="ru">
+<?php use MetaStore\App\Kernel\View; ?>
 
-<?php require_once( __DIR__ . '/../_common/header.php' ); ?>
+<?php View::get( 'header', '_common' ); ?>
 
-<body>
-<section class="hero is-warning is-fullheight">
-	<div class="hero-body">
-		<div class="container">
-			<h1 class="title is-1">Внимание!</h1>
-			<div class="content box">
-				<p>
-					Вы ввели неверный код генератора.
-				</p>
+	<section class="hero is-warning is-fullheight">
+		<div class="hero-body">
+			<div class="container">
+				<h1 class="title is-1">Внимание!</h1>
+				<div class="content box">
+					<p>
+						Вы ввели неверный код генератора.
+					</p>
+				</div>
 			</div>
 		</div>
-	</div>
-</section>
-</body>
-</html>
+	</section>
+
+<?php View::get( 'footer', '_common' ); ?>

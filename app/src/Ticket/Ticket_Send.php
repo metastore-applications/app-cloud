@@ -63,15 +63,14 @@ class Ticket_Send {
 	}
 
 	/**
-	 * @throws \Exception
+	 *
 	 */
 	public static function checkToken() {
 		if ( ( ! Request::setParam( '_metaToken' ) )
 		     || Request::setParam( '_metaToken' ) !== Session::get( '_metaToken' ) ) {
 			self::destroyToken();
-			throw new \Exception(
-				View::get( 'error', 'status' )
-			);
+			View::get( 'error', 'status' );
+			exit( 0 );
 		}
 	}
 
@@ -83,21 +82,19 @@ class Ticket_Send {
 
 		if ( Settings::getAuth( 'allow' ) && ! in_array( $form['getUserMail'], Settings::getAuth( 'allow' ) ) ) {
 			self::destroyToken();
-			throw new \Exception(
-				View::get( 'warning.auth', 'status' )
-			);
+			View::get( 'warning.auth', 'status' );
+			exit( 0 );
 		}
 
 		if ( Settings::getAuth( 'deny' ) && in_array( $form['getUserMail'], Settings::getAuth( 'deny' ) ) ) {
 			self::destroyToken();
-			throw new \Exception(
-				View::get( 'warning.auth', 'status' )
-			);
+			View::get( 'warning.auth', 'status' );
+			exit( 0 );
 		}
 	}
 
 	/**
-	 * @throws \Exception
+	 *
 	 */
 	public static function checkFormField() {
 		if ( empty( Request::setParam( 'userMailFrom' ) )
@@ -105,22 +102,20 @@ class Ticket_Send {
 		     || empty( Request::setParam( 'fileDestination' ) )
 		     || empty( Request::setParam( 'fileDescription' ) ) ) {
 			self::destroyToken();
-			throw new \Exception(
-				View::get( 'warning.field', 'status' )
-			);
+			View::get( 'warning.field', 'status' );
+			exit( 0 );
 		}
 	}
 
 	/**
-	 * @throws \Exception
+	 *
 	 */
 	public static function checkCaptcha() {
 		if ( ( ! Request::setParam( '_metaCaptcha' ) )
 		     || ( Request::setParam( '_metaCaptcha' ) != Session::get( '_metaCaptcha' )[1] ) ) {
 			self::destroyToken();
-			throw new \Exception(
-				View::get( 'warning.captcha', 'status' )
-			);
+			View::get( 'warning.captcha', 'status' );
+			exit( 0 );
 		}
 	}
 
