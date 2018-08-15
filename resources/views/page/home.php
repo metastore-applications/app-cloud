@@ -43,7 +43,7 @@ use MetaStore\App\Cloud\Config;
 						</div>
 					<?php endif; ?>
 
-					<?php if ( Config\General::getService( 'upload' )['enable'] ): ?>
+					<?php if ( Config\General::getService( 'file.upload' )['enable'] ): ?>
 						<div class="media">
 							<figure class="media-left">
 								<p class="image is-64x64"><span class="fas fa-upload"></span></p>
@@ -59,7 +59,7 @@ use MetaStore\App\Cloud\Config;
 						</div>
 					<?php endif; ?>
 
-					<?php if ( Config\General::getService( 'download' )['enable'] ): ?>
+					<?php if ( Config\General::getService( 'file.download' )['enable'] ): ?>
 						<div class="media">
 							<figure class="media-left">
 								<p class="image is-64x64"><span class="fas fa-download"></span></p>

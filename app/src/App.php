@@ -57,14 +57,14 @@ class App {
 				Kernel\View::get( 'form.ticket.create', 'page' );
 				break;
 			case 'form.file.upload':
-				if ( ! Config\General::getService( 'upload' )['enable'] ) {
+				if ( ! Config\General::getService( 'file.upload' )['enable'] ) {
 					exit( 0 );
 				}
 
 				Kernel\View::get( 'form.file.upload', 'page' );
 				break;
 			case 'form.file.download':
-				if ( ! Config\General::getService( 'download' )['enable'] ) {
+				if ( ! Config\General::getService( 'file.download' )['enable'] ) {
 					exit( 0 );
 				}
 
