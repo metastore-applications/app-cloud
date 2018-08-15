@@ -81,13 +81,15 @@ class Ticket_Send {
 	public static function checkMailAddress() {
 		$form = self::getFormData();
 
-		if ( Config\Ticket::getMailFrom( 'allow' ) && ! in_array( $form['getUserMail'], Config\Ticket::getMailFrom( 'allow' ) ) ) {
+		if ( Config\Ticket::getMailFrom( 'allow' )
+		     && ! in_array( $form['getUserMail'], Config\Ticket::getMailFrom( 'allow' ) ) ) {
 			self::destroyToken();
 			Kernel\View::get( 'warning.auth', 'status' );
 			exit( 0 );
 		}
 
-		if ( Config\Ticket::getMailFrom( 'deny' ) && in_array( $form['getUserMail'], Config\Ticket::getMailFrom( 'deny' ) ) ) {
+		if ( Config\Ticket::getMailFrom( 'deny' )
+		     && in_array( $form['getUserMail'], Config\Ticket::getMailFrom( 'deny' ) ) ) {
 			self::destroyToken();
 			Kernel\View::get( 'warning.auth', 'status' );
 			exit( 0 );
@@ -191,7 +193,7 @@ class Ticket_Send {
 			$mail->setFrom( 'cloud-' . $_SESSION['_ticketID'] . '@web.aoesp.ru' );
 			$addresses = Config\Ticket::getMailTo();
 
-			foreach ($addresses as $address) {
+			foreach ( $addresses as $address ) {
 				$mail->addAddress( $address );
 			}
 
