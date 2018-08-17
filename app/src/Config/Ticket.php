@@ -50,4 +50,5 @@ class Ticket {
 
 		return $out;
 	}
+
 }

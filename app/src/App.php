@@ -75,6 +75,7 @@ class App {
 				Ticket\Create::sendMail();
 				break;
 			case 'action.file.upload':
+				File\Upload::uploadFile();
 				break;
 			default:
 				Kernel\View::get( 'home', 'page' );

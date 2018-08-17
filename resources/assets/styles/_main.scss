@@ -42,3 +42,16 @@ h6 {
 		}
 	}
 }
+
+.uploadProgress {
+	display: none;
+}
+
+#messageLog {
+	position: fixed;
+	box-shadow: 2px 2px 3px 0 rgba(10, 10, 10, .1);
+	width: 20rem;
+	display: none;
+	top: 1rem;
+	right: 1rem;
+}

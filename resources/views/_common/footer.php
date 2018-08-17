@@ -1,3 +1,9 @@
+<!-- / log: message -->
+<div id="messageLog" class="message is-small">
+	<div class="message-body"></div>
+</div>
+<!-- / log: message -->
+
 <!-- scripts -->
 <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
 <script src="/resources/assets/scripts/bulma.min.js"></script>

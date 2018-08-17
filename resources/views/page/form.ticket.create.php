@@ -20,7 +20,7 @@
 						</div>
 					</div>
 				</div>
-				<form method="post" action="?get=action.ticket.send">
+				<form id="formTicket" method="post" action="?get=action.ticket.send">
 					<input id="_metaToken" name="_metaToken" value="<?php echo $_SESSION['_metaToken']; ?>" type="hidden" />
 					<div class="field is-horizontal">
 						<div class="field-body">
@@ -179,11 +179,15 @@
 						<div class="level-right">
 							<div class="level-item">
 								<!-- buttons -->
-								<div class="field">
+								<div class="field has-addons">
 									<div class="control">
-										<button id="sendTicket" class="button is-success">
-											<span class="icon is-small"><i class="fas fa-bullhorn"></i></span>
-											<span>Отправить</span>
+										<a id="buttonStatus" class="button is-medium is-static">
+											<span class="icon is-small"><i class="fas fa-hand-point-right"></i></span>
+										</a>
+									</div>
+									<div class="control">
+										<button id="buttonSendTicket" class="button is-medium is-success">
+											<span class="icon is-small"><i class="fas fa-share-square"></i></span>
 										</button>
 									</div>
 								</div>

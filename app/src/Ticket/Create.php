@@ -2,6 +2,7 @@
 
 namespace MetaStore\App\Cloud\Ticket;
 
+use MetaStore\App\Cloud\System;
 use MetaStore\App\Kernel;
 use MetaStore\App\Cloud\Config;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -16,7 +17,7 @@ class Create {
 	 *
 	 */
 	public static function destroyToken() {
-		unset ( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'], $_SESSION['_ticketID'] );
+		System::destroyToken();
 	}
 
 	/**
@@ -64,15 +65,10 @@ class Create {
 	}
 
 	/**
-	 *
+	 * @throws \Exception
 	 */
 	public static function checkToken() {
-		if ( ( ! Kernel\Request::setParam( '_metaToken' ) )
-		     || Kernel\Request::setParam( '_metaToken' ) !== $_SESSION['_metaToken'] ) {
-			self::destroyToken();
-			Kernel\View::get( 'error', 'status' );
-			exit( 0 );
-		}
+		System::checkToken();
 	}
 
 	/**
@@ -83,43 +79,27 @@ class Create {
 
 		if ( Config\Ticket::getMailFrom( 'allow' )
 		     && ! in_array( $form['getUserMail'], Config\Ticket::getMailFrom( 'allow' ) ) ) {
-			self::destroyToken();
-			Kernel\View::get( 'warning.auth', 'status' );
-			exit( 0 );
+			throw new \Exception( 'Mail Deny' );
 		}
 
 		if ( Config\Ticket::getMailFrom( 'deny' )
 		     && in_array( $form['getUserMail'], Config\Ticket::getMailFrom( 'deny' ) ) ) {
-			self::destroyToken();
-			Kernel\View::get( 'warning.auth', 'status' );
-			exit( 0 );
+			throw new \Exception( 'Mail Deny' );
 		}
 	}
 
 	/**
-	 *
+	 * @throws \Exception
 	 */
 	public static function checkFormField() {
-		if ( empty( Kernel\Request::setParam( 'userMailFrom' ) )
-		     || empty( Kernel\Request::setParam( 'fileLocation' ) )
-		     || empty( Kernel\Request::setParam( 'fileDestination' ) )
-		     || empty( Kernel\Request::setParam( 'fileDescription' ) ) ) {
-			self::destroyToken();
-			Kernel\View::get( 'warning.field', 'status' );
-			exit( 0 );
-		}
+		System::checkFormField( [ 'userMailFrom', 'fileLocation', 'fileDestination', 'fileDescription' ] );
 	}
 
 	/**
-	 *
+	 * @throws \Exception
 	 */
 	public static function checkCaptcha() {
-		if ( ( ! Kernel\Request::setParam( '_metaCaptcha' ) )
-		     || ( Kernel\Request::setParam( '_metaCaptcha' ) != $_SESSION['_metaCaptcha'][1] ) ) {
-			self::destroyToken();
-			Kernel\View::get( 'warning.captcha', 'status' );
-			exit( 0 );
-		}
+		System::checkCaptcha();
 	}
 
 	/**
@@ -128,8 +108,7 @@ class Create {
 	 */
 	public static function mailSubject() {
 		$form = self::getFormData();
-
-		$out = '[CLOUD-' . mb_strtoupper( $_SESSION['_ticketID'] ) . '-OPEN] Загрузка в облако от: ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
+		$out  = '[CLOUD-' . mb_strtoupper( $_SESSION['_ticketID'] ) . '-OPEN] Загрузка в облако от: ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
 
 		return $out;
 	}
@@ -164,11 +143,11 @@ class Create {
 	 * Form: save fields.
 	 */
 	public static function saveForm() {
-		Kernel\Cookie::set( 'userFirstName', 'userFirstName', 'form' );
-		Kernel\Cookie::set( 'userLastName', 'userLastName', 'form' );
-		Kernel\Cookie::set( 'userMiddleName', 'userMiddleName', 'form' );
-		Kernel\Cookie::set( 'userMailFrom', 'userMailFrom', 'form' );
-		Kernel\Cookie::set( 'userPhone', 'userPhone', 'form' );
+		Kernel\Cookie::set( 'form', 'userFirstName', 'userFirstName' );
+		Kernel\Cookie::set( 'form', 'userLastName', 'userLastName' );
+		Kernel\Cookie::set( 'form', 'userMiddleName', 'userMiddleName' );
+		Kernel\Cookie::set( 'form', 'userMailFrom', 'userMailFrom' );
+		Kernel\Cookie::set( 'form', 'userPhone', 'userPhone' );
 
 		return true;
 	}
@@ -176,20 +155,17 @@ class Create {
 	/**
 	 * Mail: send.
 	 *
-	 * @return bool
 	 * @throws \Exception
 	 */
 	public static function sendMail() {
-		$form = self::getFormData();
-
 		self::checkToken();
-		self::checkFormField();
 		self::checkCaptcha();
+		self::checkFormField();
 		self::checkMailAddress();
 
-		$mail = new PHPMailer ( true );
-
 		try {
+			$form = self::getFormData();
+			$mail = new PHPMailer ( true );
 			$mail->setFrom( 'cloud-' . $_SESSION['_ticketID'] . '@web.aoesp.ru' );
 			$addresses = Config\Ticket::getMailTo();
 
@@ -203,13 +179,10 @@ class Create {
 			$mail->Subject = self::mailSubject();
 			$mail->Body    = self::mailBody();
 			$mail->send();
-			Kernel\View::get( 'success', 'status' );
 		} catch ( \Exception $e ) {
-			Kernel\View::get( 'error', 'status' );
+			throw new \Exception( 'Send Mail' );
 		}
 
 		self::destroyToken();
-
-		return true;
 	}
 }
