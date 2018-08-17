@@ -78,6 +78,14 @@ function extJS_parseJSON(data) {
 
 /**
  *
+ * ---------------------------------------------------------------------------------------------------------------------
+ */
+function extJS_resetInput() {
+	$('form').find('.ext-reset').val('');
+}
+
+/**
+ *
  * @param form
  * @param button
  * @param url
@@ -103,7 +111,8 @@ function extJS_sendForm(form, button, url) {
 					extJS_messageLog(resp.error.msg, 'is-success', 'is-danger');
 					extJS_buttonStatus('<i class="fas fa-exclamation-triangle"></i>');
 				} else {
-					form[0].reset();
+					//form[0].reset();
+					extJS_resetInput();
 					extJS_messageLog('Done!', 'is-danger', 'is-success');
 					extJS_buttonStatus('<i class="fas fa-check"></i>');
 				}

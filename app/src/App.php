@@ -22,7 +22,7 @@ class App {
 		}
 
 		if ( ! isset( $_SESSION['_ticketID'] ) ) {
-			$_SESSION['_ticketID'] = Kernel\Hash::generator();
+			$_SESSION['_ticketID'] = mb_strtoupper( Kernel\Hash::generator() );
 		}
 
 		if ( ! isset( $_SESSION['_metaCaptcha'] ) ) {

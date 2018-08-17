@@ -108,7 +108,7 @@ class Create {
 	 */
 	public static function mailSubject() {
 		$form = self::getFormData();
-		$out  = '[CLOUD-' . mb_strtoupper( $_SESSION['_ticketID'] ) . '-OPEN] Загрузка в облако от: ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
+		$out  = '[CLOUD-' . $_SESSION['_ticketID'] . '-OPEN] Загрузка в облако от: ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
 
 		return $out;
 	}
@@ -143,11 +143,11 @@ class Create {
 	 * Form: save fields.
 	 */
 	public static function saveForm() {
-		Kernel\Cookie::set( 'form', 'userFirstName', 'userFirstName' );
-		Kernel\Cookie::set( 'form', 'userLastName', 'userLastName' );
-		Kernel\Cookie::set( 'form', 'userMiddleName', 'userMiddleName' );
-		Kernel\Cookie::set( 'form', 'userMailFrom', 'userMailFrom' );
-		Kernel\Cookie::set( 'form', 'userPhone', 'userPhone' );
+		Kernel\Cookie::set( 'form', 'ticketUserFirstName', 'userFirstName' );
+		Kernel\Cookie::set( 'form', 'ticketUserLastName', 'userLastName' );
+		Kernel\Cookie::set( 'form', 'ticketUserMiddleName', 'userMiddleName' );
+		Kernel\Cookie::set( 'form', 'ticketUserMailFrom', 'userMailFrom' );
+		Kernel\Cookie::set( 'form', 'ticketUserPhone', 'userPhone' );
 
 		return true;
 	}

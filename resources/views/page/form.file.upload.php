@@ -26,7 +26,7 @@
 					<div class="field">
 						<div class="control has-icons-left">
 							<div class="file">
-								<input id="getFile" name="getFile" class="" type="file" accept="" />
+								<input id="getFile" name="getFile" class="ext-reset" type="file" accept="" />
 							</div>
 						</div>
 						<p class="help has-text-grey">
@@ -39,7 +39,7 @@
 							<!-- user: ticket ID -->
 							<div class="field">
 								<div class="control is-expanded has-icons-left">
-									<input id="ticketID" name="ticketID" class="input" value="" placeholder="Укажите TicketID..." autocomplete="off" />
+									<input id="ticketID" name="ticketID" class="input ext-reset" value="" placeholder="Укажите TicketID..." autocomplete="off" />
 									<span class="icon is-small is-left"><i class="fas fa-anchor"></i></span>
 								</div>
 								<p class="help has-text-grey">
@@ -50,7 +50,7 @@
 							<!-- user: email -->
 							<div class="field">
 								<div class="control is-expanded has-icons-left">
-									<input id="userMailTo" name="userMailTo" class="input" type="email" value="" placeholder="Укажите адрес электронной почты..." />
+									<input id="userMailTo" name="userMailTo" class="input ext-reset" type="email" value="" placeholder="Укажите адрес электронной почты..." />
 									<span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
 								</div>
 								<p class="help has-text-grey">
@@ -63,7 +63,7 @@
 					<!-- info: comment -->
 					<div class="field">
 						<div class="control">
-							<textarea id="userComment" name="userComment" class="textarea" placeholder="Введите комментарий (если имеется)..."></textarea>
+							<textarea id="userComment" name="userComment" class="textarea ext-reset" placeholder="Введите комментарий (если имеется)..."></textarea>
 						</div>
 						<p class="help has-text-grey">
 							Введите комментарий (если имеется).
@@ -86,7 +86,7 @@
 							<!-- captcha: value -->
 							<div class="field">
 								<div class="control is-expanded has-icons-left">
-									<input id="_metaCaptcha" name="_metaCaptcha" class="input" autocomplete="off" />
+									<input id="_metaCaptcha" name="_metaCaptcha" class="input ext-reset" autocomplete="off" />
 									<span class="icon is-small is-left"><i class="fas fa-robot"></i></span>
 								</div>
 								<p class="help has-text-grey">

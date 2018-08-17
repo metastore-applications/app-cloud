@@ -1,2 +1,9 @@
 {
+	"upload": {
+		"mime": {
+			"allow": [
+				"application/zip"
+			]
+		}
+	}
 }

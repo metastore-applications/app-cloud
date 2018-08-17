@@ -27,7 +27,7 @@
 							<!-- user: last name -->
 							<div class="field">
 								<div class="control is-expanded has-icons-left">
-									<input id="userLastName" name="userLastName" class="input" value="<?php echo Cookie::get( 'userLastName' ) ?>" placeholder="Введите свою фамилию..." required />
+									<input id="userLastName" name="userLastName" class="input" value="<?php echo Cookie::get( 'ticketUserLastName' ) ?>" placeholder="Введите свою фамилию..." required />
 									<span class="icon is-small is-left"><i class="fas fa-user"></i></span>
 								</div>
 								<p class="help has-text-grey">
@@ -38,7 +38,7 @@
 							<!-- user: first name -->
 							<div class="field">
 								<div class="control is-expanded has-icons-left">
-									<input id="userFirstName" name="userFirstName" class="input" value="<?php echo Cookie::get( 'userFirstName' ) ?>" placeholder="Введите своё имя..." required />
+									<input id="userFirstName" name="userFirstName" class="input" value="<?php echo Cookie::get( 'ticketUserFirstName' ) ?>" placeholder="Введите своё имя..." required />
 									<span class="icon is-small is-left"><i class="fas fa-user"></i></span>
 								</div>
 								<p class="help has-text-grey">
@@ -49,7 +49,7 @@
 							<!-- user: middle name -->
 							<div class="field">
 								<div class="control is-expanded has-icons-left">
-									<input id="userMiddleName" name="userMiddleName" class="input" value="<?php echo Cookie::get( 'userMiddleName' ) ?>" placeholder="Введите своё отчество..." required />
+									<input id="userMiddleName" name="userMiddleName" class="input" value="<?php echo Cookie::get( 'ticketUserMiddleName' ) ?>" placeholder="Введите своё отчество..." required />
 									<span class="icon is-small is-left"><i class="fas fa-user"></i></span>
 								</div>
 								<p class="help has-text-grey">
@@ -64,7 +64,7 @@
 							<!-- user: email -->
 							<div class="field">
 								<div class="control is-expanded has-icons-left">
-									<input id="userMailFrom" name="userMailFrom" class="input" type="email" value="<?php echo Cookie::get( 'userMailFrom' ) ?>" placeholder="Укажите свой адрес электронной почты..." required />
+									<input id="userMailFrom" name="userMailFrom" class="input" type="email" value="<?php echo Cookie::get( 'ticketUserMailFrom' ) ?>" placeholder="Укажите свой адрес электронной почты..." required />
 									<span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
 								</div>
 								<p class="help has-text-grey">
@@ -75,7 +75,7 @@
 							<!-- user: phone -->
 							<div class="field">
 								<div class="control is-expanded has-icons-left">
-									<input id="userPhone" name="userPhone" class="input" type="tel" value="<?php echo Cookie::get( 'userPhone' ) ?>" placeholder="Укажите свой номер телефона..." required />
+									<input id="userPhone" name="userPhone" class="input" type="tel" value="<?php echo Cookie::get( 'ticketUserPhone' ) ?>" placeholder="Укажите свой номер телефона..." required />
 									<span class="icon is-small is-left"><i class="fas fa-phone"></i></span>
 								</div>
 								<p class="help has-text-grey">
@@ -88,7 +88,7 @@
 					<!-- file: location -->
 					<div class="field">
 						<div class="control has-icons-left is-expanded">
-							<input id="fileLocation" name="fileLocation" class="input" placeholder="Введите адрес файла..." required />
+							<input id="fileLocation" name="fileLocation" class="input ext-reset" placeholder="Введите адрес файла..." required />
 							<span class="icon is-small is-left"><i class="fas fa-plane-departure"></i></span>
 						</div>
 						<p class="help has-text-grey">
@@ -99,7 +99,7 @@
 					<!-- file: destination -->
 					<div class="field">
 						<div class="control has-icons-left is-expanded">
-							<input id="fileDestination" name="fileDestination" class="input" placeholder="Введите место назначения..." required />
+							<input id="fileDestination" name="fileDestination" class="input ext-reset" placeholder="Введите место назначения..." required />
 							<span class="icon is-small is-left"><i class="fas fa-plane-arrival"></i></span>
 						</div>
 						<p class="help has-text-grey">
@@ -110,7 +110,7 @@
 					<!-- info: description -->
 					<div class="field">
 						<div class="control">
-							<textarea id="fileDescription" name="fileDescription" class="textarea" placeholder="Введите краткое описание.." required></textarea>
+							<textarea id="fileDescription" name="fileDescription" class="textarea ext-reset" placeholder="Введите краткое описание.." required></textarea>
 						</div>
 						<p class="help has-text-grey">
 							Введите краткое описание отправляемой работы.
@@ -120,7 +120,7 @@
 					<!-- info: comment -->
 					<div class="field">
 						<div class="control">
-							<textarea id="userComment" name="userComment" class="textarea" placeholder="Введите комментарий (если имеется)..."></textarea>
+							<textarea id="userComment" name="userComment" class="textarea ext-reset" placeholder="Введите комментарий (если имеется)..."></textarea>
 						</div>
 						<p class="help has-text-grey">
 							Введите комментарий (если имеется).
@@ -143,7 +143,7 @@
 							<!-- captcha: value -->
 							<div class="field">
 								<div class="control is-expanded has-icons-left">
-									<input id="_metaCaptcha" name="_metaCaptcha" class="input" autocomplete="off" required />
+									<input id="_metaCaptcha" name="_metaCaptcha" class="input ext-reset" autocomplete="off" required />
 									<span class="icon is-small is-left"><i class="fas fa-robot"></i></span>
 								</div>
 								<p class="help has-text-grey">
