@@ -38,36 +38,6 @@ class Upload {
 	}
 
 	/**
-	 * @param $userMail
-	 * @param $userComment
-	 * @param $fileLocation
-	 * @param $fileSaveTime
-	 *
-	 * @return string
-	 */
-	public static function mailBody( $userMail, $userComment, $fileLocation, $fileSaveTime ) {
-		$body = '<table>';
-		$body .= '<tr><td>E-mail:</td><td>' . $userMail . '</td></tr>';
-		$body .= '<tr><td>Файл:</td><td><code>' . $fileLocation . '</code></td></tr>';
-		$body .= '<tr><td>Время:</td><td><strong>' . $fileSaveTime . '</strong></td></tr>';
-		$body .= '<tr><td>Комментарий:</td><td>' . $userComment . '</td></tr>';
-		$body .= '</table>';
-
-		return $body;
-	}
-
-	/**
-	 * @return string
-	 * @throws \Exception
-	 */
-	public static function getStorage() {
-		$hash = Kernel\Hash::generator( 'sha1' );
-		$out  = Kernel\Route::DOCUMENT_ROOT() . 'storage/data/' . $hash;
-
-		return $out;
-	}
-
-	/**
 	 * @param $meta
 	 *
 	 * @return mixed
@@ -104,6 +74,38 @@ class Upload {
 	public static function setFileName() {
 		$rule = 'Any-Latin; NFD; [:Nonspacing Mark:] Remove; NFC; Lower();';
 		$out  = Kernel\Translit::get( self::getFileInfo( 'name' ), $rule );
+
+		return $out;
+	}
+
+	/**
+	 * @param $userMail
+	 * @param $userComment
+	 * @param $fileLocation
+	 * @param $fileSaveTime
+	 *
+	 * @return string
+	 */
+	public static function mailBody( $userMail, $userComment, $fileLocation, $fileSaveTime ) {
+		$body = '<table>';
+		$body .= '<tr><td>E-mail:</td><td>' . $userMail . '</td></tr>';
+		$body .= '<tr><td>Файл:</td><td><code>' . $fileLocation . '</code></td></tr>';
+		$body .= '<tr><td>Время:</td><td><strong>' . $fileSaveTime . '</strong></td></tr>';
+		$body .= '<tr><td>Комментарий:</td><td>' . $userComment . '</td></tr>';
+		$body .= '</table>';
+
+		return $body;
+	}
+
+	/**
+	 * @return string
+	 * @throws \Exception
+	 */
+	public static function getStorage() {
+		$root = Kernel\Route::DOCUMENT_ROOT();
+		$days = Kernel\Request::setParam( 'fileSaveTime' );
+		$hash = Kernel\Hash::generator( 'sha1' );
+		$out  = $root . 'storage' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $days . DIRECTORY_SEPARATOR . $hash;
 
 		return $out;
 	}

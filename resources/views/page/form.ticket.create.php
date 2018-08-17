@@ -160,7 +160,7 @@
 								<div class="field">
 									<div class="control has-icons-left">
 										<div class="select">
-											<select name="fileSaveTime">
+											<select id="fileSaveTime" name="fileSaveTime">
 												<option value="days_03" selected>3 дня</option>
 												<option value="days_10">10 дней</option>
 											</select>
