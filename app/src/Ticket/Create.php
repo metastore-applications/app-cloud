@@ -14,13 +14,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Create {
 
 	/**
-	 *
-	 */
-	public static function destroyToken() {
-		System::destroyToken();
-	}
-
-	/**
 	 * @return array
 	 * @throws \Exception
 	 */
@@ -28,7 +21,7 @@ class Create {
 		$getUserFirstName   = Kernel\Request::setParam( 'userFirstName' );
 		$getUserLastName    = Kernel\Request::setParam( 'userLastName' );
 		$getUserMiddleName  = Kernel\Request::setParam( 'userMiddleName' );
-		$getUserMail        = Kernel\Parser::normalizeData( Kernel\Request::setParam( 'userMailFrom' ) );
+		$getUserMailFrom    = Kernel\Parser::normalizeData( Kernel\Request::setParam( 'userMailFrom' ) );
 		$getUserPhone       = Kernel\Request::setParam( 'userPhone' );
 		$getUserComment     = Kernel\Request::setParam( 'userComment' );
 		$getFileLocation    = Kernel\Request::setParam( 'fileLocation' );
@@ -52,7 +45,7 @@ class Create {
 			'getUserFirstName',
 			'getUserLastName',
 			'getUserMiddleName',
-			'getUserMail',
+			'getUserMailFrom',
 			'getUserPhone',
 			'getUserComment',
 			'getFileLocation',
@@ -78,12 +71,12 @@ class Create {
 		$form = self::getFormData();
 
 		if ( Config\Ticket::getMailFrom( 'allow' )
-		     && ! in_array( $form['getUserMail'], Config\Ticket::getMailFrom( 'allow' ) ) ) {
+		     && ! in_array( $form['getUserMailFrom'], Config\Ticket::getMailFrom( 'allow' ) ) ) {
 			throw new \Exception( 'Mail Deny' );
 		}
 
 		if ( Config\Ticket::getMailFrom( 'deny' )
-		     && in_array( $form['getUserMail'], Config\Ticket::getMailFrom( 'deny' ) ) ) {
+		     && in_array( $form['getUserMailFrom'], Config\Ticket::getMailFrom( 'deny' ) ) ) {
 			throw new \Exception( 'Mail Deny' );
 		}
 	}
@@ -108,7 +101,7 @@ class Create {
 	 */
 	public static function mailSubject() {
 		$form = self::getFormData();
-		$out  = '[CLOUD-' . $_SESSION['_ticketID'] . '-OPEN] Загрузка в облако от: ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
+		$out  = '[CLOUD-' . mb_strtoupper( $_SESSION['_ticketID'] ) . '-OPEN] Загрузка в облако от: ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
 
 		return $out;
 	}
@@ -122,7 +115,7 @@ class Create {
 
 		$out = '<table>';
 		$out .= '<tr><td>ФИО:</td><td>' . $form['getUserLastName'] . ' ' . $form['getUserFirstName'] . ' ' . $form['getUserMiddleName'] . '</td></tr>';
-		$out .= '<tr><td>E-mail:</td><td>' . $form['getUserMail'] . '</td></tr>';
+		$out .= '<tr><td>E-mail:</td><td>' . $form['getUserMailFrom'] . '</td></tr>';
 		$out .= '<tr><td>Телефон:</td><td>' . $form['getUserPhone'] . '</td></tr>';
 		$out .= '<tr><td>Файл:</td><td><code>' . $form['getFileLocation'] . '</code></td></tr>';
 		$out .= '<tr><td>Место назначения:</td><td>' . $form['getFileDestination'] . '</td></tr>';
@@ -133,7 +126,7 @@ class Create {
 			$out .= '<tr><td>Комментарий:</td><td>' . $form['getUserComment'] . '</td></tr>';
 		}
 
-		$out .= '<tr><td>Ticket ID:</td><td>' . $_SESSION['_ticketID'] . '</td></tr>';
+		$out .= '<tr><td>Ticket ID:</td><td>' . mb_strtoupper( $_SESSION['_ticketID'] ) . '</td></tr>';
 		$out .= '</table>';
 
 		return $out;
@@ -173,7 +166,7 @@ class Create {
 				$mail->addAddress( $address );
 			}
 
-			$mail->addAddress( $form['getUserMail'] );
+			$mail->addAddress( $form['getUserMailFrom'] );
 			$mail->isHTML( true );
 			$mail->CharSet = 'utf-8';
 			$mail->Subject = self::mailSubject();
@@ -182,7 +175,5 @@ class Create {
 		} catch ( \Exception $e ) {
 			throw new \Exception( 'Send Mail' );
 		}
-
-		self::destroyToken();
 	}
 }

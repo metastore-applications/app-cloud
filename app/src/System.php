@@ -10,9 +10,37 @@ use MetaStore\App\Kernel;
  */
 class System {
 
+	/**
+	 * @throws \Exception
+	 */
+	public static function createToken() {
+		session_start();
+
+		if ( ! isset( $_SESSION['_metaToken'] ) ) {
+			$_SESSION['_metaToken'] = Kernel\Token::generator();
+		}
+
+		if ( ! isset( $_SESSION['_ticketID'] ) ) {
+			$_SESSION['_ticketID'] = Kernel\Hash::generator();
+		}
+
+		if ( ! isset( $_SESSION['_metaCaptcha'] ) ) {
+			$_SESSION['_metaCaptcha'] = [
+				Kernel\Random::number( 1000000000, 9999999999 ),
+				Kernel\Random::number( 10000, 99999 )
+			];
+		}
+
+		if ( ! isset( $_SESSION['_uploadDir'] ) ) {
+			$_SESSION['_uploadDir'] = Kernel\Hash::generator( 'sha1' );
+		}
+	}
+
+	/**
+	 *
+	 */
 	public static function destroyToken() {
-		//unset( $_SESSION['_metaToken'], $_SESSION['_metaCaptcha'] );
-		unset( $_SESSION['_ticketID'] );
+		unset( $_SESSION['_ticketID'], $_SESSION['_uploadDir'] );
 	}
 
 	/**

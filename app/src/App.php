@@ -12,28 +12,6 @@ use MetaStore\App\Cloud\{Ticket, File};
 class App {
 
 	/**
-	 * @throws \Exception
-	 */
-	public static function setSession() {
-		session_start();
-
-		if ( ! isset( $_SESSION['_metaToken'] ) ) {
-			$_SESSION['_metaToken'] = Kernel\Token::generator();
-		}
-
-		if ( ! isset( $_SESSION['_ticketID'] ) ) {
-			$_SESSION['_ticketID'] = mb_strtoupper( Kernel\Hash::generator() );
-		}
-
-		if ( ! isset( $_SESSION['_metaCaptcha'] ) ) {
-			$_SESSION['_metaCaptcha'] = [
-				Kernel\Random::number( 1000000000, 9999999999 ),
-				Kernel\Random::number( 10000, 99999 )
-			];
-		}
-	}
-
-	/**
 	 * @return string
 	 */
 	public static function getType() {
@@ -73,9 +51,12 @@ class App {
 			case 'action.ticket.send':
 				Ticket\Create::saveForm();
 				Ticket\Create::sendMail();
+				System::destroyToken();
 				break;
 			case 'action.file.upload':
 				File\Upload::uploadFile();
+				File\Upload::sendMail();
+				System::destroyToken();
 				break;
 			default:
 				Kernel\View::get( 'home', 'page' );
@@ -88,7 +69,7 @@ class App {
 	 * @throws \Exception
 	 */
 	public static function runApp() {
-		self::setSession();
+		System::createToken();
 		self::getPage();
 	}
 }
