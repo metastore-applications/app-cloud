@@ -39,11 +39,11 @@
 							<!-- user: ticket ID -->
 							<div class="field">
 								<div class="control is-expanded has-icons-left">
-									<input id="ticketID" name="ticketID" class="input ext-reset" value="" placeholder="Укажите TicketID..." autocomplete="off" required />
+									<input id="ticketID" name="ticketID" class="input ext-reset" value="" placeholder="Укажите Ticket ID..." autocomplete="off" required />
 									<span class="icon is-small is-left"><i class="fas fa-anchor"></i></span>
 								</div>
 								<p class="help has-text-grey">
-									Укажите TicketID.
+									Укажите Ticket ID.
 								</p>
 							</div>
 							<!-- / user: ticket ID -->
