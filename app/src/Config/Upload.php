@@ -16,22 +16,18 @@ class Upload {
 	public static function getConfig() {
 		$out = Kernel\Config::getFile( 'service.file.upload' );
 
-		return $out['upload'];
+		return $out['service']['upload'];
 	}
 
 	/**
 	 * @param $status
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public static function getMime( $status ) {
 		$get = self::getConfig();
 
-		if ( ! isset( $get['mime'][ $status ] ) ) {
-			return false;
-		}
-
-		$out = $get['mime'][ $status ];
+		$out = $get['mime'][ $status ] ?? '' ?: [];
 
 		return $out;
 	}

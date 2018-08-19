@@ -27,11 +27,7 @@ class General {
 	public static function getSystem( $param ) {
 		$get = self::getConfig();
 
-		if ( ! isset( $get['system'][ $param ] ) ) {
-			return false;
-		}
-
-		$out = $get['system'][ $param ];
+		$out = $get['system'][ $param ] ?? '' ?: [];
 
 		return $out;
 	}
@@ -44,11 +40,7 @@ class General {
 	public static function getService( $service ) {
 		$get = self::getConfig();
 
-		if ( ! isset( $get['service'][ $service ] ) ) {
-			return false;
-		}
-
-		$out = $get['service'][ $service ];
+		$out = $get['service'][ $service ] ?? '' ?: [];
 
 		return $out;
 	}

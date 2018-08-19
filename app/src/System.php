@@ -74,4 +74,29 @@ class System {
 			}
 		}
 	}
+
+	/**
+	 * @param $file
+	 * @param $service
+	 */
+	public static function checkAuth( $file, $service ) {
+		$cfg  = Kernel\Config::getFile( $file );
+		$auth = $cfg['service'][ $service ]['auth'];
+
+		$auth_user = Kernel\Parser::clearData( $_SERVER['PHP_AUTH_USER'] ?? '' ?: '' );
+		$auth_pass = Kernel\Parser::clearData( $_SERVER['PHP_AUTH_PW'] ?? '' ?: '' );
+
+
+		$user = $auth[ $auth_user ] ?? '' ?: [];
+		$pass = $user['password'] ?? '' ?: '';
+
+
+		$validated = ( in_array( $auth_user, $user ) ) && ( $auth_pass === $pass );
+
+		if ( ! $validated ) {
+			header( 'WWW-Authenticate: Basic realm="My Realm"' );
+			header( 'HTTP/1.0 401 Unauthorized' );
+			die ( "Not authorized" );
+		}
+	}
 }

@@ -1,16 +1,20 @@
 {
 	"general": {
 		"system": {
-			"enable": 1
+			"enable": 1,
+			"name": "Upload System",
+			"url": {
+				"home": "https://example.com"
+			}
 		},
 		"service": {
 			"ticket": {
 				"enable": 1
 			},
-			"upload": {
+			"file.upload": {
 				"enable": 1
 			},
-			"download": {
+			"file.download": {
 				"enable": 0
 			}
 		}

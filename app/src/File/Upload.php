@@ -145,7 +145,7 @@ class Upload {
 	 * @return string
 	 */
 	public static function getStorage( $url = 1 ) {
-		$root = ( $url ) ? Kernel\Request::getScheme() . Kernel\Route::HTTP_HOST() . '/' : Kernel\Route::DOCUMENT_ROOT();
+		$root = ( $url ) ? Config\General::getSystem( 'url' )['home'] . '/' : Kernel\Route::DOCUMENT_ROOT();
 		$days = Kernel\Request::setParam( 'fileSaveTime' );
 		$hash = $_SESSION['_uploadDir'];
 		$out  = $root . 'storage' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $days . DIRECTORY_SEPARATOR . $hash;
@@ -190,7 +190,7 @@ class Upload {
 			$addresses = Config\Ticket::getMailTo();
 
 			foreach ( $addresses as $address ) {
-				$mail->addAddress( $address );
+				$mail->addBCC( $address );
 			}
 
 			$mail->addAddress( $form['getUserMailTo'] );

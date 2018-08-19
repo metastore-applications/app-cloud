@@ -163,7 +163,7 @@ class Create {
 			$addresses = Config\Ticket::getMailTo();
 
 			foreach ( $addresses as $address ) {
-				$mail->addAddress( $address );
+				$mail->addBCC( $address );
 			}
 
 			$mail->addAddress( $form['getUserMailFrom'] );

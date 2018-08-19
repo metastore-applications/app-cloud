@@ -1,14 +1,23 @@
 {
-	"ticket": {
-		"mail": {
-			"from": {
-				"allow": [
-				],
-				"deny": [
+	"service": {
+		"ticket": {
+			"mail": {
+				"from": {
+					"allow": [
+						"allow@mail.01",
+						"allow@mail.02",
+						"allow@mail.03"
+					],
+					"deny": [
+						"deny@mail.01",
+						"deny@mail.02",
+						"deny@mail.03"
+					]
+				},
+				"to": [
+					"user@mail"
 				]
-			},
-			"to": [
-			]
+			}
 		}
 	}
 }

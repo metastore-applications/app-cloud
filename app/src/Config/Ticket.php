@@ -16,7 +16,7 @@ class Ticket {
 	public static function getConfig() {
 		$out = Kernel\Config::getFile( 'service.ticket' );
 
-		return $out['ticket'];
+		return $out['service']['ticket'];
 	}
 
 	/**
@@ -27,11 +27,7 @@ class Ticket {
 	public static function getMailFrom( $status ) {
 		$get = self::getConfig();
 
-		if ( ! isset( $get['mail']['from'][ $status ] ) ) {
-			return false;
-		}
-
-		$out = $get['mail']['from'][ $status ];
+		$out = $get['mail']['from'][ $status ] ?? '' ?: [];
 
 		return $out;
 	}
@@ -42,11 +38,7 @@ class Ticket {
 	public static function getMailTo() {
 		$get = self::getConfig();
 
-		if ( ! isset( $get['mail']['to'] ) ) {
-			return false;
-		}
-
-		$out = $get['mail']['to'];
+		$out = $get['mail']['to'] ?? '' ?: [];
 
 		return $out;
 	}

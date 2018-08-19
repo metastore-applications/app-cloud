@@ -1,9 +1,17 @@
 {
-	"upload": {
-		"mime": {
-			"allow": [
-				"application/zip"
-			]
+	"service": {
+		"upload": {
+			"auth": {
+				"user@mail": {
+					"login": "user@mail",
+					"password": "password"
+				}
+			},
+			"mime": {
+				"allow": [
+					"application/zip"
+				]
+			}
 		}
 	}
 }
