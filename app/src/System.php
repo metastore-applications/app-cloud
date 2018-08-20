@@ -94,9 +94,9 @@ class System {
 		$validated = ( in_array( $auth_user, $user ) ) && ( $auth_pass === $pass );
 
 		if ( ! $validated ) {
-			header( 'WWW-Authenticate: Basic realm="My Realm"' );
+			header( 'WWW-Authenticate: Basic realm="Cloud System"' );
 			header( 'HTTP/1.0 401 Unauthorized' );
-			die ( "Not authorized" );
+			die ( 'Not authorized' );
 		}
 	}
 }
