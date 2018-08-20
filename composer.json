@@ -31,7 +31,10 @@
 		"ext-fileinfo": "*",
 		"ext-json": "*",
 		"phpmailer/phpmailer": "~6.0",
-		"metastore/lib-kernel": "@dev"
+		"metastore/lib-kernel": "@dev",
+		"metastore/lib-jquery": "@dev",
+		"metastore/lib-bulma": "@dev",
+		"metastore/lib-fontawesome-free": "@dev"
 	},
 	"autoload": {
 		"psr-4": {
