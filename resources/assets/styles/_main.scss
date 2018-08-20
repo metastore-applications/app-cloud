@@ -1,5 +1,6 @@
-html, body {
-	font-family: 'Trebuchet MS', sans-serif
+html,
+body {
+	font-family: 'Roboto', 'Trebuchet MS', sans-serif
 }
 
 html {
@@ -10,12 +11,18 @@ body {
 	position: relative;
 }
 
+pre,
+code {
+	font-family: 'Fira Mono', monospace;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
+	font-family: 'Roboto Condensed', 'Trebuchet MS', sans-serif;
 	text-transform: uppercase
 }
 

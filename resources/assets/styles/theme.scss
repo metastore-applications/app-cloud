@@ -1,1 +1,18 @@
+// Vendor: Font Awesome.
+$fa-font-path: '/vendor/font-awesome/webfonts';
+
+@import '../../../vendor/font-awesome/scss/fontawesome.scss';
+@import '../../../vendor/font-awesome/scss/regular.scss';
+@import '../../../vendor/font-awesome/scss/solid.scss';
+@import '../../../vendor/font-awesome/scss/brands.scss';
+
+// Vendor: Bulma.
+$custom-font-path: '/resources/assets/fonts';
+
+@import '../../../vendor/bulma/bulma.sass';
+
+// System: Font.
+@import 'font.scss';
+
+// System: Main.
 @import 'main.scss';

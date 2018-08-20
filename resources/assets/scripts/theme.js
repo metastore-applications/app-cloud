@@ -4,8 +4,7 @@
  * ---------------------------------------------------------------------------------------------------------------------
  */
 function extJS_buttonStatus(data) {
-	let log;
-	log = $('#buttonStatus');
+	const log = $('#buttonStatus');
 	log.find('span').html(data);
 }
 
@@ -15,9 +14,8 @@ function extJS_buttonStatus(data) {
  * ---------------------------------------------------------------------------------------------------------------------
  */
 function extJS_uploadPercent(data) {
-	let progress, percent;
-	progress = $('.uploadProgress');
-	percent = $('#uploadPercent');
+	const progress = $('.uploadProgress');
+	const percent = $('#uploadPercent');
 	progress.show().find(percent).html(data);
 }
 
@@ -29,8 +27,7 @@ function extJS_uploadPercent(data) {
  * ---------------------------------------------------------------------------------------------------------------------
  */
 function extJS_messageLog(data, removeClass, addClass) {
-	let log;
-	log = $('#messageLog');
+	const log = $('#messageLog');
 	log.removeClass(removeClass).addClass(addClass).show().find('.message-body').html(data);
 	log.click(function () {
 		$(this).hide();
@@ -43,8 +40,7 @@ function extJS_messageLog(data, removeClass, addClass) {
  * ---------------------------------------------------------------------------------------------------------------------
  */
 function extJS_uploadProgress(xhr) {
-	let file;
-	file = $('input[type=file]').val();
+	const file = $('input[type=file]').val();
 
 	xhr.upload.addEventListener('progress', function (event) {
 		if (file && event.lengthComputable) {
@@ -135,9 +131,8 @@ function extJS_sendForm(form, button, url) {
  * ---------------------------------------------------------------------------------------------------------------------
  */
 function extJS_sendTicket() {
-	let form, button;
-	form = $('#formTicket');
-	button = $('#buttonSendTicket');
+	const form = $('#formTicket');
+	const button = $('#buttonSendTicket');
 
 	extJS_sendForm(form, button, '?get=action.ticket.send');
 }
@@ -147,9 +142,8 @@ function extJS_sendTicket() {
  * ---------------------------------------------------------------------------------------------------------------------
  */
 function extJS_uploadFile() {
-	let form, button;
-	form = $('#formUpload');
-	button = $('#buttonSendUpload');
+	const form = $('#formUpload');
+	const button = $('#buttonSendUpload');
 
 	extJS_sendForm(form, button, '?get=action.file.upload');
 }
