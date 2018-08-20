@@ -2,7 +2,7 @@
 	"general": {
 		"system": {
 			"enable": 1,
-			"name": "Upload System",
+			"name": "Cloud System",
 			"url": {
 				"home": "https://example.com"
 			}
