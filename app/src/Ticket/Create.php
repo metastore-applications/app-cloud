@@ -101,7 +101,7 @@ class Create {
 	 */
 	public static function mailSubject() {
 		$form = self::getFormData();
-		$out  = '[CLOUD-' . mb_strtoupper( $_SESSION['_ticketID'] ) . '-OPEN] Загрузка в облако от: ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
+		$out  = '[CLOUD-' . mb_strtoupper( $_SESSION['_ticketID'] ) . '-OPEN] ' . $form['getUserFirstName'] . ' ' . $form['getUserLastName'];
 
 		return $out;
 	}
@@ -126,7 +126,7 @@ class Create {
 			$out .= '<tr><td>Комментарий:</td><td>' . $form['getUserComment'] . '</td></tr>';
 		}
 
-		$out .= '<tr><td>Ticket ID:</td><td>' . mb_strtoupper( $_SESSION['_ticketID'] ) . '</td></tr>';
+		$out .= '<tr><td>Ticket ID:</td><td><code>' . mb_strtoupper( $_SESSION['_ticketID'] ) . '</code></td></tr>';
 		$out .= '</table>';
 
 		return $out;

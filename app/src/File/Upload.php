@@ -111,7 +111,7 @@ class Upload {
 	 */
 	public static function mailSubject() {
 		$form = self::getFormData();
-		$out  = '[CLOUD-' . mb_strtoupper( $form['getTicketID'] ) . '-UPLOAD] Загрузка в облако';
+		$out  = '[CLOUD-' . mb_strtoupper( $form['getTicketID'] ) . '-CLOSE] Выполнено';
 
 		return $out;
 	}
@@ -125,15 +125,14 @@ class Upload {
 		$file = self::setFileName();
 
 		$out = '<table>';
-		$out .= '<tr><td>Ticket ID:</td><td>' . mb_strtoupper( $form['getTicketID'] ) . '</td></tr>';
+		$out .= '<tr><td>Ссылка:</td><td>' . $url . '/' . $file . '</td></tr>';
+		$out .= '<tr><td>Время:</td><td><strong>' . $form['getFileSaveTime'] . '</strong></td></tr>';
 
 		if ( ! empty( $form['getUserComment'] ) ) {
 			$out .= '<tr><td>Комментарий:</td><td>' . $form['getUserComment'] . '</td></tr>';
 		}
 
-		$out .= '<tr><td>Ссылка:</td><td><strong>' . $url . '/' . $file . '</strong></td></tr>';
-		$out .= '<tr><td>Время:</td><td><strong>' . $form['getFileSaveTime'] . '</strong></td></tr>';
-
+		$out .= '<tr><td>Ticket ID:</td><td><code>' . mb_strtoupper( $form['getTicketID'] ) . '</code></td></tr>';
 		$out .= '</table>';
 
 		return $out;
