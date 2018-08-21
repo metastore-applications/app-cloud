@@ -32,6 +32,8 @@ use MetaStore\App\Cloud\Config; ?>
 	<!-- / twitter -->
 
 	<!-- styles -->
+	<link type="text/css" rel="stylesheet" href="/vendor/metastore/lib-fontawesome-free/css/all.min.css" />
+	<link type="text/css" rel="stylesheet" href="/vendor/metastore/lib-bulma/css/bulma.min.css" />
 	<link type="text/css" rel="stylesheet" href="/resources/assets/styles/theme.css" />
 	<!-- / styles -->
 

@@ -5,7 +5,7 @@
 <!-- / log: message -->
 
 <!-- scripts -->
-<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/metastore/lib-jquery/jquery.min.js"></script>
 <script src="/resources/assets/scripts/bulma.min.js"></script>
 <script src="/resources/assets/scripts/theme.min.js"></script>
 <!-- / scripts -->

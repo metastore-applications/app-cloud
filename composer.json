@@ -2,7 +2,9 @@
 	"name": "metastore/app-cloud",
 	"type": "project",
 	"description": "",
-	"license": "GPL-3.0-or-later",
+	"license": [
+		"GPL-3.0-or-later"
+	],
 	"homepage": "https://metastore.pro",
 	"keywords": [
 		"metadata",
@@ -34,7 +36,10 @@
 		"metastore/lib-kernel": "@dev",
 		"metastore/lib-jquery": "@dev",
 		"metastore/lib-bulma": "@dev",
-		"metastore/lib-fontawesome-free": "@dev"
+		"metastore/lib-fontawesome-free": "@dev",
+		"metastore/lib-roboto": "@dev",
+		"metastore/lib-roboto-condensed": "@dev",
+		"metastore/lib-fira-mono": "@dev"
 	},
 	"autoload": {
 		"psr-4": {
