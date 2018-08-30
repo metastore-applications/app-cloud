@@ -9,13 +9,16 @@
 		},
 		"service": {
 			"ticket": {
-				"enable": 1
+				"enable": true,
+				"private": true
 			},
 			"file.upload": {
-				"enable": 1
+				"enable": true,
+				"private": false
 			},
 			"file.download": {
-				"enable": 0
+				"enable": false,
+				"private": false
 			}
 		}
 	}

@@ -17,6 +17,13 @@
 				"to": [
 					"user@mail"
 				]
+			},
+			"security": {
+				"bypass": [
+					"bypass@mail.01",
+					"bypass@mail.02",
+					"bypass@mail.03"
+				]
 			}
 		}
 	}

@@ -76,6 +76,23 @@ class System {
 	}
 
 	/**
+	 * @param $service
+	 */
+	public static function checkPrivateIP( $service ) {
+		$ip     = Kernel\Route::REMOTE_ADDR();
+		$filter = filter_var(
+			$ip,
+			FILTER_VALIDATE_IP,
+			FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+		);
+
+		if ( Config\General::getService( $service )['private'] && $filter ) {
+			http_response_code( 403 );
+			die ( 'Forbidden' );
+		}
+	}
+
+	/**
 	 * @param $file
 	 * @param $service
 	 */
@@ -95,7 +112,7 @@ class System {
 
 		if ( ! $validated ) {
 			header( 'WWW-Authenticate: Basic realm="Cloud System"' );
-			header( 'HTTP/1.0 401 Unauthorized' );
+			http_response_code( 401 );
 			die ( 'Not authorized' );
 		}
 	}

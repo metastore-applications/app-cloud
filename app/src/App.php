@@ -28,6 +28,8 @@ class App {
 	public static function getPage() {
 		switch ( self::getType() ) {
 			case 'form.ticket.create':
+				System::checkPrivateIP( 'ticket' );
+
 				if ( ! Config\General::getService( 'ticket' )['enable'] ) {
 					exit( 0 );
 				}
@@ -35,6 +37,7 @@ class App {
 				Kernel\View::get( 'form.ticket.create', 'page' );
 				break;
 			case 'form.file.upload':
+				System::checkPrivateIP( 'file.upload' );
 				System::checkAuth( 'service.file.upload', 'upload' );
 
 				if ( ! Config\General::getService( 'file.upload' )['enable'] ) {
@@ -44,6 +47,7 @@ class App {
 				Kernel\View::get( 'form.file.upload', 'page' );
 				break;
 			case 'form.file.download':
+				System::checkPrivateIP( 'file.download' );
 				System::checkAuth( 'service.file.download', 'download' );
 
 				if ( ! Config\General::getService( 'file.download' )['enable'] ) {
