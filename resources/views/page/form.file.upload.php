@@ -1,4 +1,4 @@
-<?php use MetaStore\App\{Kernel\View, Cloud\Config}; ?>
+<?php use MetaStore\App\{Kernel\View, Cloud\System}; ?>
 
 <?php View::get( 'header', '_common' ); ?>
 
@@ -26,7 +26,7 @@
 					<div class="field">
 						<div class="control has-icons-left">
 							<div class="file">
-								<input id="getFile" name="getFile" class="ext-reset" type="file" accept="<?php echo implode( ',', Config\Upload::getMime( 'allow' ) ) ?>" required />
+								<input id="getFile" name="getFile" class="ext-reset" type="file" accept="<?php echo System::getFormFileAccept(); ?>" required />
 							</div>
 						</div>
 						<p class="help has-text-grey">

@@ -116,4 +116,13 @@ class System {
 			die ( 'Not authorized' );
 		}
 	}
+
+	/**
+	 * @return string
+	 */
+	public static function getFormFileAccept() {
+		$out = implode( ',', Config\Upload::getMime( 'allow' ) );
+
+		return $out;
+	}
 }
