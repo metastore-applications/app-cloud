@@ -186,7 +186,7 @@
 										</a>
 									</div>
 									<div class="control">
-										<button id="buttonSendTicket" class="button is-medium is-success">
+										<button id="buttonSendTicket" class="button is-medium is-success" title="Отправить">
 											<span class="icon is-small"><i class="fas fa-share-square"></i></span>
 										</button>
 									</div>

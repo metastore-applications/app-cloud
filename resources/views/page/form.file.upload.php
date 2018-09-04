@@ -135,7 +135,7 @@
 										</a>
 									</div>
 									<div class="control">
-										<button id="buttonSendUpload" class="button is-success is-medium">
+										<button id="buttonSendUpload" class="button is-success is-medium" title="Загрузить">
 											<span class="icon is-small"><i class="fas fa-upload"></i></span>
 										</button>
 									</div>
