@@ -88,11 +88,11 @@
 					<!-- file: location -->
 					<div class="field">
 						<div class="control has-icons-left is-expanded">
-							<input id="fileLocation" name="fileLocation" class="input ext-reset" placeholder="Введите адрес файла..." required />
+							<input id="fileLocation" name="fileLocation" class="input ext-reset" placeholder="Введите адрес файла... Например: \\mesp.ru\common\free\file.zip" required />
 							<span class="icon is-small is-left"><i class="fas fa-plane-departure"></i></span>
 						</div>
 						<p class="help has-text-grey">
-							Введите адрес, где находится файл для отправки.
+							Введите адрес, где находится файл для отправки. Например, "\\mesp.ru\common\free\file.zip".
 						</p>
 					</div>
 					<!-- / file: location -->
