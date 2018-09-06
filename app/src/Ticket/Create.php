@@ -115,9 +115,9 @@ class Create {
 
 		$out = '<table>';
 		$out .= '<tr><td>ФИО:</td><td>' . $form['getUserLastName'] . ' ' . $form['getUserFirstName'] . ' ' . $form['getUserMiddleName'] . '</td></tr>';
-		$out .= '<tr><td>E-mail:</td><td>' . $form['getUserMailFrom'] . '</td></tr>';
+		$out .= '<tr><td>E-mail:</td><td><a href="mailto:' . $form['getUserMailFrom'] . '">' . $form['getUserMailFrom'] . '</a></td></tr>';
 		$out .= '<tr><td>Телефон:</td><td>' . $form['getUserPhone'] . '</td></tr>';
-		$out .= '<tr><td>Файл:</td><td><code>' . $form['getFileLocation'] . '</code></td></tr>';
+		$out .= '<tr><td>Файл:</td><td><a href="' . $form['getFileLocation'] . '"><code>' . $form['getFileLocation'] . '</code></a></td></tr>';
 		$out .= '<tr><td>Место назначения:</td><td>' . $form['getFileDestination'] . '</td></tr>';
 		$out .= '<tr><td>Описание:</td><td>' . $form['getFileDescription'] . '</td></tr>';
 		$out .= '<tr><td>Время:</td><td><strong>' . $form['getFileSaveTime'] . '</strong></td></tr>';
