@@ -160,17 +160,29 @@ class Create {
 			$form = self::getFormData();
 			$mail = new PHPMailer ( true );
 			$mail->setFrom( 'cloud-' . $_SESSION['_ticketID'] . '@web.aoesp.ru' );
-			$addresses = Config\Ticket::getMailTo();
+			$mailTo = Config\Ticket::getMailTo();
 
-			foreach ( $addresses as $address ) {
+			foreach ( $mailTo as $address ) {
 				$mail->addBCC( $address );
 			}
 
 			$mail->addAddress( $form['getUserMailFrom'] );
 			$mail->isHTML( true );
 			$mail->CharSet = 'utf-8';
-			$mail->Subject = self::mailSubject();
-			$mail->Body    = self::mailBody();
+
+			if ( ! in_array( $form['getUserMailFrom'], Config\Ticket::getSecurityBypass() ) ) {
+				$securityMail = Config\Ticket::getSecurityMail();
+
+				foreach ( $securityMail as $address ) {
+					$mail->addBCC( $address );
+				}
+
+				$mail->Subject = self::mailSubject() . ' - ТРЕБУЕТСЯ ПРОВЕРКА!';
+			} else {
+				$mail->Subject = self::mailSubject();
+			}
+
+			$mail->Body = self::mailBody();
 			$mail->send();
 		} catch ( \Exception $e ) {
 			throw new \Exception( 'Send Mail' );

@@ -43,4 +43,24 @@ class Ticket {
 		return $out;
 	}
 
+	/**
+	 * @return array
+	 */
+	public static function getSecurityMail() {
+		$get = self::getConfig();
+		$out = $get['security']['mail'] ?? '' ?: [];
+
+		return $out;
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getSecurityBypass() {
+		$get = self::getConfig();
+		$out = $get['security']['bypass'] ?? '' ?: [];
+
+		return $out;
+	}
+
 }
