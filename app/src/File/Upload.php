@@ -125,7 +125,7 @@ class Upload {
 		$file = self::setFileName();
 
 		$out = '<table>';
-		$out .= '<tr><td>Ссылка:</td><td>' . $url . '/' . $file . '</td></tr>';
+		$out .= '<tr><td>Ссылка:</td><td><a href="' . $url . '/' . $file . '"><code>' . $url . '/' . $file . '</code></a></td></tr>';
 		$out .= '<tr><td>Время:</td><td><strong>' . $form['getFileSaveTime'] . '</strong></td></tr>';
 
 		if ( ! empty( $form['getUserComment'] ) ) {
