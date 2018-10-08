@@ -2,7 +2,7 @@
 
 ## Авторы
 
-- [**Kitsune Solar**](https://kitsune.solar/) - редактор.
+- [**Kitsune Solar**](https://kitsune.solar/) - разработчик.
 
 ## Ссылки
 
