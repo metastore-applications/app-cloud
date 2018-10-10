@@ -43,7 +43,7 @@
 									<span class="icon is-small is-left"><i class="fas fa-anchor"></i></span>
 								</div>
 								<p class="help has-text-grey">
-									Укажите Ticket ID.
+									Укажите Ticket ID (если имеется).
 								</p>
 							</div>
 							<!-- / user: ticket ID -->
@@ -54,7 +54,7 @@
 									<span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
 								</div>
 								<p class="help has-text-grey">
-									Укажите адрес электронной почты.
+									Укажите адрес электронной почты, на который будет отправлена ссылка.
 								</p>
 							</div>
 							<!-- / user: email -->

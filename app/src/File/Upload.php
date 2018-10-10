@@ -79,7 +79,7 @@ class Upload {
 	 * @return array
 	 */
 	public static function getFormData() {
-		$getTicketID     = Kernel\Request::setParam( 'ticketID' );
+		$getTicketID     = Kernel\Request::setParam( 'ticketID' ) ?? '' ?: '';
 		$getUserMailTo   = Kernel\Parser::normalizeData( Kernel\Request::setParam( 'userMailTo' ) );
 		$getUserComment  = Kernel\Request::setParam( 'userComment' );
 		$getFileSaveTime = Kernel\Request::setParam( 'fileSaveTime' );
@@ -193,6 +193,7 @@ class Upload {
 			}
 
 			$mail->addAddress( $form['getUserMailTo'] );
+			$mail->addAddress( $_SERVER['PHP_AUTH_USER'] );
 			$mail->isHTML( true );
 			$mail->CharSet = 'utf-8';
 			$mail->Subject = self::mailSubject();
