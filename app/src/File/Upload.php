@@ -31,7 +31,7 @@ class Upload {
 	 * @throws \Exception
 	 */
 	public static function checkFormField() {
-		System::checkFormField( [ 'userMailTo', 'ticketID' ] );
+		System::checkFormField( [ 'userMailTo' ] );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class Upload {
 	 */
 	public static function mailSubject() {
 		$form = self::getFormData();
-		$out  = '[CLOUD-' . mb_strtoupper( $form['getTicketID'] ) . '-CLOSE] Выполнено';
+		$out  = '[CLOUD-' . mb_strtoupper( $form['getTicketID'] ) . '-UPLOAD] Загружено';
 
 		return $out;
 	}
