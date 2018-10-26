@@ -83,6 +83,7 @@ class Upload {
 		$getUserMailTo   = Kernel\Parser::normalizeData( Kernel\Request::setParam( 'userMailTo' ) );
 		$getUserComment  = Kernel\Request::setParam( 'userComment' );
 		$getFileSaveTime = Kernel\Request::setParam( 'fileSaveTime' );
+		$getUrlType      = Kernel\Request::setParam( 'urlType' );
 
 		switch ( $getFileSaveTime ) {
 			case 'days_03':
@@ -101,6 +102,7 @@ class Upload {
 			'getUserMailTo',
 			'getUserComment',
 			'getFileSaveTime',
+			'getUrlType',
 		];
 
 		return compact( $out );
@@ -144,7 +146,15 @@ class Upload {
 	 * @return string
 	 */
 	public static function getStorage( $url = 1 ) {
-		$root = ( $url ) ? Config\General::getSystem( 'url' )['home'] . '/' : Kernel\Route::DOCUMENT_ROOT();
+		$form = self::getFormData();
+
+		if ( $form['getUrlType'] ) {
+			$home = Config\General::getSystem( 'url' )['home']['internal'];
+		} else {
+			$home = Config\General::getSystem( 'url' )['home']['external'];
+		}
+
+		$root = ( $url ) ? $home . '/' : Kernel\Route::DOCUMENT_ROOT();
 		$days = Kernel\Request::setParam( 'fileSaveTime' );
 		$hash = $_SESSION['_uploadDir'];
 		$out  = $root . 'storage' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $days . DIRECTORY_SEPARATOR . $hash;

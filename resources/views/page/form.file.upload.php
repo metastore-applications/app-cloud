@@ -69,6 +69,16 @@
 							Введите комментарий (если имеется).
 						</p>
 					</div>
+					<!-- file: url type -->
+					<div class="field">
+						<div class="control">
+							<label class="checkbox">
+								<input id="urlType" name="urlType" type="checkbox" />
+								Создать внутреннюю ссылку
+							</label>
+						</div>
+					</div>
+					<!-- / file: url type -->
 					<!-- / info: comment -->
 					<div class="field is-horizontal">
 						<div class="field-body">
