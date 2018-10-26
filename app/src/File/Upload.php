@@ -79,7 +79,7 @@ class Upload {
 	 * @return array
 	 */
 	public static function getFormData() {
-		$getTicketID     = Kernel\Request::setParam( 'ticketID' ) ?? '' ?: '';
+		$getTicketID     = Kernel\Request::setParam( 'ticketID' ) ?? '' ?: '00000000';
 		$getUserMailTo   = Kernel\Parser::normalizeData( Kernel\Request::setParam( 'userMailTo' ) );
 		$getUserComment  = Kernel\Request::setParam( 'userComment' );
 		$getFileSaveTime = Kernel\Request::setParam( 'fileSaveTime' );
