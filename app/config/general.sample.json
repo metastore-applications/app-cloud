@@ -4,7 +4,10 @@
 			"enable": 1,
 			"name": "Cloud System",
 			"url": {
-				"home": "https://example.com"
+				"home": {
+					"external": "http://external.example.org",
+					"internal": "http://internal.example.org"
+				}
 			}
 		},
 		"service": {
