@@ -43,7 +43,7 @@
 									<span class="icon is-small is-left"><i class="fas fa-anchor"></i></span>
 								</div>
 								<p class="help has-text-grey">
-									Укажите Ticket ID (если имеется).
+									Укажите Ticket ID, если знаете. Если не знаете, введите <code>00000000</code>.
 								</p>
 							</div>
 							<!-- / user: ticket ID -->
